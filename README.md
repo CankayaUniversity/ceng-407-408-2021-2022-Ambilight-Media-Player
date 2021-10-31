@@ -2,6 +2,7 @@
 
 ### Supervisor & Co Supervisor
 Dr. Faris Serdar TAŞEL
+
 Ögr.Grv. Efe Çiftçi
 
 

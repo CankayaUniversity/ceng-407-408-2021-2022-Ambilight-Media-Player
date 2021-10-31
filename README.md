@@ -1,5 +1,10 @@
 # Ambilight Media Player
 
+### Supervisor & Co Supervisor
+Dr. Faris Serdar TAŞEL
+Ögr.Grv. Efe Çiftçi
+
+
 ### Group Members:
 
 - (201911406) Utku Yılmaz ([@utkuy-ceng](https://github.com/utkuy-ceng "@utkuy-ceng"))

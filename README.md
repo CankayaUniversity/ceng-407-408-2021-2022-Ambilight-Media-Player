@@ -29,3 +29,6 @@ Each module folder contains specific instructions in their respective `$ README.
 
 ### For production
 See [Installation Guide](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki/Installation-Guide).
+
+
+![](https://static.wixstatic.com/media/6b165c_e007cd21cbc7414382363568f0849794~mv2.png/v1/crop/x_0,y_0,w_315,h_68,q_85/6b165c_e007cd21cbc7414382363568f0849794~mv2.webp)

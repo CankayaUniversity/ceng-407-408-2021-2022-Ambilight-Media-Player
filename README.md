@@ -1,4 +1,4 @@
-# Ambilight Media Player
+# ![](https://static.wixstatic.com/media/6b165c_6545fbdf83f943a1ba45e75d8b0b6bbe~mv2.png) Ambilight Media Player
 
 ### Supervisor & Co Supervisor
 Dr. Faris Serdar TAŞEL

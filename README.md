@@ -15,6 +15,8 @@ Dr. Faris Serdar TAŞEL
 
 See the [wiki](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki "wiki") for available documents.
 
+See the [Project Web Site](https://ambilightbp.wixsite.com/project "WebSite") for details.
+
 # Installing and Running the Project
 
 ### For development

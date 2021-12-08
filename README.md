@@ -1,9 +1,9 @@
 # ![](https://static.wixstatic.com/media/6b165c_6545fbdf83f943a1ba45e75d8b0b6bbe~mv2.png) Ambilight Media Player
 
 ### Supervisor & Co Supervisor
-Dr. Faris Serdar TAŞEL
+[Dr. Faris Serdar TAŞEL](http://www.cankaya.edu.tr/arama/cv_en/LecturerFarisSerdarTA%C5%9EEL.html)
 
-Ögr.Grv. Efe Çiftçi
+[Öğr.Gör. Efe ÇİFTÇİ](http://www.cankaya.edu.tr/akademik_birimler/cv/%C3%96%C4%9Fr.G%C3%B6r.Efe%C3%87%C4%B0FTC%C4%B0.html)
 
 
 ### Group Members:
@@ -19,15 +19,7 @@ See the [Project Web Site](https://ambilightbp.wixsite.com/project "WebSite") fo
 
 # Installing and Running the Project
 
-### For development
-Since we're planning to distribute the software as a single Docker Image, the instructions below are only needed during development.
-
-Each module folder contains specific instructions in their respective `$ README.md` files to run the software during development.
-{will be added soon}
-- For backend instructions, see [`$ source/backend/README.md`](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki) 
-- For frontend instructions, see [`$ source/frontend/README.md`](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki) 
-- For data pipeline instructions, see [`$ source/data pipeline/README.md`](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki)
-- For prediction instructions, see [`$ source/prediction/README.md`](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki)
+Will be published soon.
 
 ### For production
 See [Installation Guide](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki/Installation-Guide).

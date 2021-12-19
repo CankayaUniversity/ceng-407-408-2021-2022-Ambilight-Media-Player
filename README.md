@@ -12,6 +12,7 @@
 - (201811291) Emre Can Aşık ([@heisanengineer](https://github.com/heisanengineer "@heisanengineer"))
 - (201811252) Ayhan Arıcı ([@ayhanarici](https://github.com/ayhanarici "@ayhanarici"))
 - (201811251) Elif Akçayır ([@sunshinelif](https://github.com/sunshinelif "@sunshinelif"))
+- (201711050) Tonguç Berat Özel (@tongucozel)(https://github.com/tongucozel "@tongucozel"))
 
 See the [wiki](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki "wiki") for available documents.
 

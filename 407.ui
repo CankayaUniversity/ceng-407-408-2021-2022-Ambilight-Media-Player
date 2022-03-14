@@ -326,24 +326,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>591</width>
-      <height>361</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="playvideoLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMaximumSize</enum>
-     </property>
-    </layout>
-   </widget>
    <widget class="QGroupBox" name="settingsBox">
     <property name="enabled">
      <bool>true</bool>
@@ -370,7 +352,7 @@
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>80</y>
+       <y>85</y>
        <width>121</width>
        <height>23</height>
       </rect>
@@ -383,7 +365,7 @@
      <property name="geometry">
       <rect>
        <x>471</x>
-       <y>80</y>
+       <y>86</y>
        <width>101</width>
        <height>23</height>
       </rect>
@@ -598,6 +580,53 @@
         </property>
        </widget>
       </item>
+     </layout>
+    </widget>
+    <widget class="QPushButton" name="discoverButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>86</y>
+       <width>121</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Discover Bulbs</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="videowidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-1</y>
+      <width>591</width>
+      <height>361</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>1</y>
+       <width>591</width>
+       <height>361</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="playvideoLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
      </layout>
     </widget>
    </widget>

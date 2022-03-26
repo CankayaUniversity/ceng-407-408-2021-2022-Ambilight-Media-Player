@@ -14,8 +14,19 @@ bulb.turn_off()
 time.sleep(5)
 bulb.toggle()
 
+bulb.start_music(55443) #Removes the limitation of data to be sent to the bulb
+
 #Adjusting the bulb brightness
 bulb.set_brightness(100)
 for i in range(100,0,-20):
     bulb.set_brightness(i)
-    time.sleep(5)
+    time.sleep(1)
+
+bulb.set_brightness(100)
+
+#It is tested by sending different rgb codes to the lamp
+for r in range(0,255,5):
+    for g in range(0,255,5):
+        for b in range(0,255,5):
+            bulb.set_rgb(r,g,b)
+            print(r,g,b)

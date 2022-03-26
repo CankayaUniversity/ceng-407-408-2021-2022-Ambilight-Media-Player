@@ -1,4 +1,7 @@
-#This example shows how to create a bulb and make its basic settings.
+###############################################################################
+####Referance is https://yeelight.readthedocs.io/_/downloads/en/latest/pdf/####
+####This example shows how to create a bulb and make its basic settings.#######
+###############################################################################
 import yeelight
 import time
 from yeelight.main import Bulb

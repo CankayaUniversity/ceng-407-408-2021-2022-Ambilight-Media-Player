@@ -11,9 +11,9 @@ class QtVideoPlayer(QWidget):
         self.vWidget = QVideoWidget() #mediaplayer will be displayed here
         self.mPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface) #create mediaplayer
         self.mPlayer.setVideoOutput(self.vWidget) #set mediaplayer Video Output
-        self.mPlayer.stateChanged.connect(self.mediaStateChanged)
-        self.mPlayer.positionChanged.connect(self.positionChanged)
-        self.mPlayer.durationChanged.connect(self.durationChanged)
+        #self.mPlayer.stateChanged.connect(self.mediaStateChanged)
+        #self.mPlayer.positionChanged.connect(self.positionChanged)
+        #self.mPlayer.durationChanged.connect(self.durationChanged)
         self.vWidget.setStyleSheet('background-color: black;')
 
         self.mainLayout = QVBoxLayout() #create main layout

@@ -26,7 +26,7 @@ Will be published soon.
 See [Installation Guide](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki/Installation-Guide).
 
 
-[![cankaya](https://static.wixstatic.com/media/6b165c_e007cd21cbc7414382363568f0849794~mv2.png/v1/crop/x_0,y_0,w_70,h_68,q_85/6b165c_e007cd21cbc7414382363568f0849794~mv2.webp)](https://www.cankaya.edu.tr)&emsp;
+[![cankaya](https://static.wixstatic.com/media/6b165c_e007cd21cbc7414382363568f0849794~mv2.png/v1/crop/x_0,y_0,w_70,h_68,q_85/6b165c_e007cd21cbc7414382363568f0849794~mv2.webp)](https://www.cankaya.edu.tr?target=_blank) &emsp;
 [![ceng](https://static.wixstatic.com/media/6b165c_e007cd21cbc7414382363568f0849794~mv2.png/v1/crop/x_125,y_0,w_70,h_68,q_85/6b165c_e007cd21cbc7414382363568f0849794~mv2.webp)](https://ceng.cankaya.edu.tr)&emsp;
 [![project](https://static.wixstatic.com/media/6b165c_e007cd21cbc7414382363568f0849794~mv2.png/v1/crop/x_250,y_0,w_70,h_70,q_85/6b165c_e007cd21cbc7414382363568f0849794~mv2.webp)](https://ambilightbp.wixsite.com/project)
 

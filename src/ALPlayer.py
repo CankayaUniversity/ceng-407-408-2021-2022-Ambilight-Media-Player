@@ -314,6 +314,13 @@ class AL_Player(QtWidgets.QMainWindow):
                 self.RightBottomIpEdit.setText(rBottom["ip"])
             except:
                 pass
+        else:
+            popup= QMessageBox()
+            popup.setWindowTitle("Adjustment Issue")
+            popup.setText("Settings file not found!!!\nPlease check your Bulb settings...")
+            popup.setIcon(QMessageBox.Warning)
+            res= popup.exec_()
+
         #Create Bulbs
         if self.LeftTopBox.isChecked():
             self.leftTopBulb = Bulb(self.LeftTopIpEdit.text(), effect="smooth")
@@ -473,6 +480,7 @@ class AL_Player(QtWidgets.QMainWindow):
         if fileName != '':
             self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(fileName)))
             self.mediaPlayer2.setMedia(QMediaContent(QUrl.fromLocalFile(fileName)))
+            self.mediaPlayer2.setMuted(True)
             self.statusBar.showMessage(fileName)
             self.playbutton.setEnabled(True)
             self.volumeSlider.setValue(self.mediaPlayer.volume())
@@ -487,9 +495,12 @@ class AL_Player(QtWidgets.QMainWindow):
     
     def pauseclick(self):
         self.mediaPlayer.pause()
+        self.mediaPlayer2.pause()
 
     def stopclick(self):
         self.mediaPlayer.stop()
+        self.mediaPlayer2.stop()
+
         if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
         if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
         if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
@@ -561,7 +572,7 @@ class AL_Player(QtWidgets.QMainWindow):
         popup.setWindowTitle("Discovery Results")
         popup.setText(list)
         popup.setIcon(QMessageBox.Information)
-        res=x = popup.exec_() 
+        res= popup.exec_() 
     
     def lampCheckFun(self,ip):
         bulb = Bulb(ip, effect="smooth")

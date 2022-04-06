@@ -25,7 +25,6 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QVideoFrame, QAbstractVideoSurface, QAbstractVideoBuffer, QVideoSurfaceFormat
 from PyQt5.QtWidgets import QMessageBox
-from threading import Thread
 import yeelight
 import time
 from yeelight.main import Bulb
@@ -155,22 +154,30 @@ class VideoWidget(QVideoWidget):
         super(VideoWidget, self).__init__(parent)
         self.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
         #self.setStyleSheet("background-color: black")
-        p = self.palette()
-        p.setColor(QPalette.Window, Qt.black)
-        self.setPalette(p)
+        plt = self.palette()
+        plt.setColor(QPalette.Window, Qt.black)
+        self.setPalette(plt)
         self.setAttribute(Qt.WA_OpaquePaintEvent)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Escape and self.isFullScreen():
             self.setFullScreen(False)
             event.accept()
-        elif event.key() == Qt.Key_U:
+        elif event.key() == Qt.Key_F:
             self.setFullScreen(not self.isFullScreen())
+            event.accept()
+        elif event.key() == Qt.Key_Space:
+            if self.mediaObject().state() == QMediaPlayer.PlayingState:
+                self.mediaObject().pause()
+            else:
+                self.mediaObject().play()
             event.accept()
         else:
             super(VideoWidget, self).keyPressEvent(event)
+            
     def mouseDoubleClickEvent(self, event):
-        self.setFullScreen(not self.isFullScreen())
+        if self.mediaObject().state() != QMediaPlayer.EndOfMedia:
+            self.setFullScreen(not self.isFullScreen())
         event.accept()
 
 class AL_Player(QtWidgets.QMainWindow):
@@ -187,8 +194,8 @@ class AL_Player(QtWidgets.QMainWindow):
         self.mediaPlayer2 = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.videoWidget2 = VideoWidget()
 
-        self.videoWidget.setStyleSheet("background-color: black")
-        self.videoWidget2.setStyleSheet("background-color: black")
+        #self.videoWidget.setStyleSheet("background-color: black")
+        #self.videoWidget2.setStyleSheet("background-color: black")
 
         self.grabber = VideoFrameGrabber(self.videoWidget2, self)
         #self.mediaPlayer.setVideoOutput([self.videoWidget.videoSurface(),self.grabber])
@@ -197,7 +204,7 @@ class AL_Player(QtWidgets.QMainWindow):
 
         self.grabber.frameAvailable.connect(self.process_frame)
 
-        #self.mediaPlayer.stateChanged.connect(self.StateChanged)
+        self.mediaPlayer.stateChanged.connect(self.StateChanged)
         self.mediaPlayer.positionChanged.connect(self.positionChanged)
         self.mediaPlayer.durationChanged.connect(self.durationChanged)
         self.mediaPlayer.volumeChanged.connect(self.volumeChanged)
@@ -206,7 +213,7 @@ class AL_Player(QtWidgets.QMainWindow):
         
         self.vLayout = self.findChild(QtWidgets.QVBoxLayout, 'playvideoLayout')
         self.vLayout.addWidget(self.videoWidget)
-        self.setFixedWidth(594)
+        self.setFixedWidth(591)
         self.setFixedHeight(500)
         self.show()
 
@@ -262,12 +269,19 @@ class AL_Player(QtWidgets.QMainWindow):
 
         self.discoverButton = self.findChild(QtWidgets.QPushButton, 'discoverButton')
         self.discoverButton.clicked.connect(self.discoverBulbs)
+
+        self.muteButton = self.findChild(QtWidgets.QPushButton, 'muteButton')
+        self.muteButton.clicked.connect(self.mutePlayer)
         
         self.progressSlider = self.findChild(QtWidgets.QSlider, 'progressSlider')
         self.progressSlider.sliderMoved.connect(self.setPosition)
 
-        self.volumeSlider = self.findChild(QtWidgets.QSlider, 'volumeSlider')
-        self.volumeSlider.sliderMoved.connect(self.setVolume)
+        self.volumeDial = self.findChild(QtWidgets.QDial, 'volumeDial')
+        self.volumeDial.valueChanged.connect(self.setVolume)
+
+        self.videodelaySpin = self.findChild(QtWidgets.QSpinBox, 'videodelaySpin')
+        
+        
 
         self.LeftTopBox = self.findChild(QtWidgets.QCheckBox,'LeftTopBox')
         self.RightTopBox = self.findChild(QtWidgets.QCheckBox,'RightTopBox')
@@ -312,19 +326,33 @@ class AL_Player(QtWidgets.QMainWindow):
                 else:
                     self.RightBottomBox.setChecked(False)
                 self.RightBottomIpEdit.setText(rBottom["ip"])
+
+                vDelay = getObject["DELAY"]
+                self.videodelaySpin.setValue(int(vDelay["vdelay"]))
             except:
                 pass
+            
         else:
             popup= QMessageBox()
             popup.setWindowTitle("Adjustment Issue")
             popup.setText("Settings file not found!!!\nPlease check your Bulb settings...")
             popup.setIcon(QMessageBox.Warning)
             res= popup.exec_()
+        
+        self.createBulbs()
+        
+    def createBulbs(self):
+        try:
+            self.leftTopBulb=None
+            self.RightTopBulb=None
+            self.LeftBottomBulb=None
+            self.RightBottomBulb=None
+        except:
+            pass
 
-        #Create Bulbs
         if self.LeftTopBox.isChecked():
             self.leftTopBulb = Bulb(self.LeftTopIpEdit.text(), effect="smooth")
-        
+            
         if self.RightTopBox.isChecked():
             self.RightTopBulb = Bulb(self.RightTopIpEdit.text(), effect="smooth")
 
@@ -335,24 +363,26 @@ class AL_Player(QtWidgets.QMainWindow):
             self.RightBottomBulb = Bulb(self.RightBottomIpEdit.text(), effect="smooth")
 
         try:
-            if self.LeftTopBox.isChecked(): self.leftTopBulb.stop_music()
-            if self.RightTopBox.isChecked(): self.RightTopBulb.stop_music()
-            if self.LeftBottomBox.isChecked():self.LeftBottomBulb.stop_music()
-            if self.RightBottomBox.isChecked(): self.RightBottomBulb.stop_music()
+            if self.leftTopBulb is not None and self.LeftTopBox.isChecked() : self.leftTopBulb.stop_music()
+            if self.RightTopBulb is not None and self.RightTopBox.isChecked(): self.RightTopBulb.stop_music()
+            if self.LeftBottomBulb is not None and self.LeftBottomBox.isChecked() :self.LeftBottomBulb.stop_music()
+            if self.RightBottomBulb is not None and self.RightBottomBox.isChecked(): self.RightBottomBulb.stop_music()
         except:
-            pass
+            a=1
         time.sleep(1)
         
-        if self.LeftTopBox.isChecked():self.leftTopBulb.start_music(20000)
-        if self.RightTopBox.isChecked():self.RightTopBulb.start_music(20000)
-        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.start_music(20000)
-        if self.RightBottomBox.isChecked():self.RightBottomBulb.start_music(20000)
+        try:
+            if self.leftTopBulb is not None and self.LeftTopBox.isChecked(): self.leftTopBulb.start_music(20000)
+            if self.RightTopBulb is not None and self.RightTopBox.isChecked(): self.RightTopBulb.start_music(20000)
+            if self.LeftBottomBulb is not None and self.LeftBottomBox.isChecked():self.LeftBottomBulb.start_music(20000)
+            if self.RightBottomBulb is not None and self.RightBottomBox.isChecked(): self.RightBottomBulb.start_music(20000)
+            #self.BulbsOff()
+        except:
+            self.statusBar.showMessage("There is a problem with the bulb connections. Please check your settings...")
+            pass
 
+        
 
-        if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
-        if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
-        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
-        if self.RightBottomBox.isChecked():self.RightBottomBulb.turn_off()
 
     def sendColorV2(self,list):
         img = list[1]
@@ -386,34 +416,36 @@ class AL_Player(QtWidgets.QMainWindow):
         rbr=int(rbcolors[0,0])
         rbg=int(rbcolors[0,1])
         rbb=int(rbcolors[0,2])
+        try:
+            if self.LeftTopBox.isChecked():
+                if ltr<10 and ltg<10 and ltb<10:
+                    self.leftTopBulb.turn_off()
+                else:
+                    self.leftTopBulb.turn_on()
+                    self.leftTopBulb.set_rgb(ltr,ltg,ltb)
 
-        if self.LeftTopBox.isChecked():
-            if ltr<10 and ltg<10 and ltb<10:
-                self.leftTopBulb.turn_off()
-            else:
-                self.leftTopBulb.turn_on()
-                self.leftTopBulb.set_rgb(ltr,ltg,ltb)
+            if self.RightTopBox.isChecked():
+                if rtr<10 and rtg<10 and rtb<10:
+                    self.RightTopBulb.turn_off()
+                else:
+                    self.RightTopBulb.turn_on()
+                    self.RightTopBulb.set_rgb(rtr,rtg,rtb)
 
-        if self.RightTopBox.isChecked():
-            if rtr<10 and rtg<10 and rtb<10:
-                self.RightTopBulb.turn_off()
-            else:
-                self.RightTopBulb.turn_on()
-                self.RightTopBulb.set_rgb(rtr,rtg,rtb)
+            if self.LeftBottomBox.isChecked():
+                if lbr<10 and lbg<10 and lbb<10:
+                    self.LeftBottomBulb.turn_off()
+                else:
+                    self.LeftBottomBulb.turn_on()
+                    self.LeftBottomBulb.set_rgb(lbr,lbg,lbb)
 
-        if self.LeftBottomBox.isChecked():
-            if lbr<10 and lbg<10 and lbb<10:
-                self.LeftBottomBulb.turn_off()
-            else:
-                self.LeftBottomBulb.turn_on()
-                self.LeftBottomBulb.set_rgb(lbr,lbg,lbb)
-
-        if self.RightBottomBox.isChecked():
-            if rbr<10 and rbg<10 and rbb<10:
-                self.RightBottomBulb.turn_off()
-            else:
-                self.RightBottomBulb.turn_on()
-                self.RightBottomBulb.set_rgb(rbr,rbg,rbb)
+            if self.RightBottomBox.isChecked():
+                if rbr<10 and rbg<10 and rbb<10:
+                    self.RightBottomBulb.turn_off()
+                else:
+                    self.RightBottomBulb.turn_on()
+                    self.RightBottomBulb.set_rgb(rbr,rbg,rbb)
+        except:
+            pass
 
     def process_frame(self, image):
         img_list=self.divideImage4partV2(self.convertQImageToMat(image))
@@ -461,21 +493,33 @@ class AL_Player(QtWidgets.QMainWindow):
     def showSettings(self):
         self.settingsBox.setVisible(not self.settingsBox.isVisible())
         if self.settingsBox.isVisible():
-            self.setFixedWidth(594)
-            self.setFixedHeight(610)
+            self.setFixedWidth(591)
+            self.setFixedHeight(650)
         else:
-            self.setFixedWidth(594)
+            self.setFixedWidth(591)
             self.setFixedHeight(500)
+
+    def BulbsOff(self):
+        if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
+        if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
+        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
+        if self.RightBottomBox.isChecked():self.RightBottomBulb.turn_off()
+
+    def BulbsOn(self):
+        if self.LeftTopBox.isChecked():self.leftTopBulb.turn_on()
+        if self.RightTopBox.isChecked():self.RightTopBulb.turn_on()
+        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_on()
+        if self.RightBottomBox.isChecked():self.RightBottomBulb.turn_on()
 
     def openFile(self):
         files_types = "MPEG-4 Video File (*.mp4);;Audio Video Interleave File (*.avi);;Matroska Video File (*.mkv);;MPEG Video (*.mpeg);;Windows Media Video (*.wmv);;MPEG-4 Playlist (*.m4u);;MPEG Video File (*.mpg);;All Files (*.*)"
         fileName = QFileDialog.getOpenFileName(self, "Select and Open Video", "/",files_types)[0]
         self.FName=fileName
         
-        if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
-        if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
-        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
-        if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_off()
+        #if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
+        #if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
+        #if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
+        #if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_off()
 
         if fileName != '':
             self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(fileName)))
@@ -483,15 +527,12 @@ class AL_Player(QtWidgets.QMainWindow):
             self.mediaPlayer2.setMuted(True)
             self.statusBar.showMessage(fileName)
             self.playbutton.setEnabled(True)
-            self.volumeSlider.setValue(self.mediaPlayer.volume())
+            self.volumeDial.setValue(self.mediaPlayer.volume())
 
     def playclick(self):
         self.mediaPlayer2.play()
         self.mediaPlayer.play()
-        if self.LeftTopBox.isChecked():self.leftTopBulb.turn_on()
-        if self.RightTopBox.isChecked():self.RightTopBulb.turn_on()
-        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_on()
-        if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_on()
+        self.BulbsOn()
     
     def pauseclick(self):
         self.mediaPlayer.pause()
@@ -501,10 +542,10 @@ class AL_Player(QtWidgets.QMainWindow):
         self.mediaPlayer.stop()
         self.mediaPlayer2.stop()
 
-        if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
-        if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
-        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
-        if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_off()
+        #if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
+        #if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
+        #if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
+        #if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_off()
 
     def fullscreen(self):
         self.videoWidget.setFullScreen(True)
@@ -513,23 +554,31 @@ class AL_Player(QtWidgets.QMainWindow):
         self.videoWidget.setFullScreen(not self.videoWidget.isFullScreen())
         event.accept()
 
+    def StateChanged(self,status):
+        if status in [QMediaPlayer.StoppedState, QMediaPlayer.PausedState,QMediaPlayer.EndOfMedia]: 
+            self.BulbsOff()
+        #elif status in [QMediaPlayer.EndOfMedia]:
+        #    self.mediaPlayer.setPosition(1)
+        #    self.mediaPlayer2.setPosition(1)
+        #    self.BulbsOff()
+
     def positionChanged(self, position):
         self.progressSlider.setValue(position)
-        self.mediaPlayer2.setPosition(position)
+        self.mediaPlayer2.setPosition(position+self.videodelaySpin.value())
 
     def durationChanged(self, duration):
         self.progressSlider.setRange(0, duration)
 
     def volumeChanged(self, volume):
-        self.volumeSlider.setValue(volume)
+        self.volumeDial.setValue(volume)
 
     def setPosition(self, position):
         self.mediaPlayer.setPosition(position)
-        if position==self.mediaPlayer.duration:
-            if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
-            if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
-            if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
-            if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_off()
+        #if position==self.mediaPlayer.duration:
+        #    if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
+        #    if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
+        #    if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
+        #    if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_off()
 
     def setVolume(self, volume):
         self.mediaPlayer.setVolume(volume)
@@ -542,24 +591,26 @@ class AL_Player(QtWidgets.QMainWindow):
 
     def setFirst(self):
         self.mediaPlayer.setPosition(0)
-        if self.LeftTopBox.isChecked():self.leftTopBulb.turn_on()
-        if self.RightTopBox.isChecked():self.RightTopBulb.turn_on()
-        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_on()
-        if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_on()
+        self.BulbsOn()
 
     def setLast(self, duration):
         self.mediaPlayer.setPosition(self.mediaPlayer.duration())
-        if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
-        if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
-        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
-        if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_off()
-    
+        #if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
+        #if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
+        #if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
+        #if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_off()
+        
+    def mutePlayer(self):
+        self.mediaPlayer.setMuted(not self.mediaPlayer.isMuted())
+        if self.mediaPlayer.isMuted():
+            self.muteButton.setIcon(QIcon("./images/mute.gif"))
+        else:
+            self.muteButton.setIcon(QIcon("./images/onmute.gif"))
+        
     def exitFun(self):
-        if self.LeftTopBox.isChecked():self.leftTopBulb.turn_off()
-        if self.RightTopBox.isChecked():self.RightTopBulb.turn_off()
-        if self.LeftBottomBox.isChecked():self.LeftBottomBulb.turn_off()
-        if self.RightBottomBox.isChecked():self.RightBottomBulbb.turn_off()
-        sys.exit(app.exec_())
+        self.BulbsOff()
+        QApplication.quit()
+        #sys.exit(app.exec_())
 
     def discoverBulbs(self):
         bulbs = discover_bulbs()
@@ -644,21 +695,32 @@ class AL_Player(QtWidgets.QMainWindow):
         "ip": self.RightBottomIpEdit.text()
         }
 
+        settingObject["DELAY"] = {
+        "vdelay": self.videodelaySpin.value()
+        }
+
         with open('settings.ini', 'w') as set:
             settingObject.write(set)
         
         self.statusBar.showMessage("Settings are saved")
+        
+        popup= QMessageBox()
+        popup.setWindowTitle("Settings are saved")
+        popup.setText("Your settings are saved.\nPlease restart the program." )
+        popup.setIcon(QMessageBox.Information)
+        self.exitFun()
+
+        
 
 if __name__ == '__main__':
-
-    def except_hook(cls, exception, traceback):
-        sys.__excepthook__(cls, exception, traceback)
-    if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-        PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-    if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-        PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+    #def except_hook(cls, exception, traceback):
+    #    sys.__excepthook__(cls, exception, traceback)
+    #if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    #    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    #if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+    #    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
     app = QtWidgets.QApplication(sys.argv)
-    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
-    sys.excepthook = except_hook
+    #app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+    #sys.excepthook = except_hook
     mainWindow = AL_Player()
     sys.exit(app.exec_())

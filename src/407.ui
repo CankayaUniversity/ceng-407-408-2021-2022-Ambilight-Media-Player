@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>594</width>
-    <height>610</height>
+    <height>650</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,8 +21,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>594</width>
-    <height>610</height>
+    <width>600</width>
+    <height>650</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -33,7 +33,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>images/logo.png</normaloff>images/logo.png</iconset>
+    <normaloff>images/logo.gif</normaloff>images/logo.gif</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="verticalLayoutWidget">
@@ -75,7 +75,7 @@
      <rect>
       <x>0</x>
       <y>400</y>
-      <width>498</width>
+      <width>548</width>
       <height>51</height>
      </rect>
     </property>
@@ -89,7 +89,7 @@
      <item row="0" column="0">
       <widget class="QPushButton" name="openButton">
        <property name="toolTip">
-        <string extracomment="Open"/>
+        <string extracomment="Open">Open Video</string>
        </property>
        <property name="text">
         <string/>
@@ -112,7 +112,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string extracomment="Play"/>
+        <string extracomment="Play">Play Video</string>
        </property>
        <property name="text">
         <string/>
@@ -132,7 +132,7 @@
      <item row="0" column="2">
       <widget class="QPushButton" name="pauseButton">
        <property name="toolTip">
-        <string extracomment="Pause"/>
+        <string extracomment="Pause">Pause Video</string>
        </property>
        <property name="text">
         <string/>
@@ -151,30 +151,10 @@
      </item>
      <item row="0" column="3">
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="2">
-        <widget class="QPushButton" name="preButton">
-         <property name="toolTip">
-          <string extracomment="Previous Scene"/>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>images/prev.gif</normaloff>images/prev.gif</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="4">
         <widget class="QPushButton" name="lastButton">
          <property name="toolTip">
-          <string extracomment="Last Scene"/>
+          <string extracomment="Last Scene">Go to the last scene </string>
          </property>
          <property name="text">
           <string/>
@@ -191,10 +171,30 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="preButton">
+         <property name="toolTip">
+          <string extracomment="Previous Scene">Go to previous scene</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>images/prev.gif</normaloff>images/prev.gif</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="1">
         <widget class="QPushButton" name="firstButton">
          <property name="toolTip">
-          <string extracomment="First Scene"/>
+          <string extracomment="First Scene">Go to the first scene</string>
          </property>
          <property name="text">
           <string/>
@@ -214,7 +214,7 @@
        <item row="0" column="0">
         <widget class="QPushButton" name="stopButton">
          <property name="toolTip">
-          <string extracomment="Stop"/>
+          <string extracomment="Stop">Stop Video</string>
          </property>
          <property name="text">
           <string/>
@@ -231,30 +231,10 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="6">
-        <widget class="QPushButton" name="settingsButton">
-         <property name="toolTip">
-          <string extracomment="Settings"/>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>images/lamp.png</normaloff>images/lamp.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>32</width>
-           <height>32</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="3">
         <widget class="QPushButton" name="nextButton">
          <property name="toolTip">
-          <string extracomment="Next Scene"/>
+          <string extracomment="Next Scene">Go to next scene</string>
          </property>
          <property name="text">
           <string/>
@@ -271,10 +251,42 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="6">
+        <widget class="QPushButton" name="settingsButton">
+         <property name="toolTip">
+          <string extracomment="Settings">Show/Hide Settings</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>images/lamp.gif</normaloff>images/lamp.gif</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="5">
         <widget class="QPushButton" name="fullscrButton">
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="sizeIncrement">
+          <size>
+           <width>50</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="toolTip">
-          <string extracomment="Last Scene"/>
+          <string extracomment="Last Scene">Full Screen</string>
          </property>
          <property name="text">
           <string/>
@@ -291,6 +303,38 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="7">
+        <widget class="QPushButton" name="muteButton">
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="sizeIncrement">
+          <size>
+           <width>50</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string extracomment="Last Scene">Mute/On Sound</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>images/onmute.gif</normaloff>images/onmute.gif</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -298,10 +342,10 @@
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>550</x>
       <y>400</y>
-      <width>91</width>
-      <height>51</height>
+      <width>42</width>
+      <height>52</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -311,16 +355,58 @@
      <property name="rightMargin">
       <number>1</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QSlider" name="volumeSlider">
+     <item row="0" column="1">
+      <widget class="QDial" name="volumeDial">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="sizeIncrement">
+        <size>
+         <width>300</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>300</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Volume Setting</string>
+       </property>
        <property name="maximum">
         <number>100</number>
        </property>
-       <property name="pageStep">
-        <number>1</number>
+       <property name="value">
+        <number>0</number>
+       </property>
+       <property name="tracking">
+        <bool>true</bool>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="invertedAppearance">
+        <bool>false</bool>
+       </property>
+       <property name="invertedControls">
+        <bool>false</bool>
+       </property>
+       <property name="wrapping">
+        <bool>false</bool>
+       </property>
+       <property name="notchesVisible">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -332,8 +418,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>460</y>
+      <x>4</x>
+      <y>451</y>
       <width>589</width>
       <height>109</height>
      </rect>
@@ -348,179 +434,16 @@
     <property name="title">
      <string>Settings</string>
     </property>
-    <widget class="QPushButton" name="testButton">
-     <property name="geometry">
-      <rect>
-       <x>340</x>
-       <y>85</y>
-       <width>121</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Test Selected Lamp</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="saveSetButton">
-     <property name="geometry">
-      <rect>
-       <x>471</x>
-       <y>86</y>
-       <width>101</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Save Settings</string>
-     </property>
-    </widget>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>19</y>
        <width>561</width>
-       <height>68</height>
+       <height>82</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="2">
-       <widget class="QPushButton" name="LeftTopLamp">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string extracomment="Open"/>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>images/lamp.png</normaloff>images/lamp.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>16</width>
-          <height>16</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="LeftBottomLamp">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string extracomment="Open"/>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>images/lamp.png</normaloff>images/lamp.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>16</width>
-          <height>16</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QCheckBox" name="RightTopBox">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Right Top Lamp</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="LeftTopIpEdit">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>192.168.1.37</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="LeftTopBox">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Left Top Lamp</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="LeftBottomBox">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Left Bottom Lamp</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="LeftBottomIpEdit">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>192.168.1.XX</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QLineEdit" name="RightTopIpEdit">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>192.168.1.39</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QCheckBox" name="RightBottomBox">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Right Bottom Lamp</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="4">
        <widget class="QLineEdit" name="RightBottomIpEdit">
         <property name="font">
@@ -547,13 +470,27 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>images/lamp.png</normaloff>images/lamp.png</iconset>
+          <normaloff>images/lamp.png</normaloff>
+          <normalon>images/lamp.gif</normalon>images/lamp.png</iconset>
         </property>
         <property name="iconSize">
          <size>
           <width>16</width>
           <height>16</height>
          </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QCheckBox" name="RightBottomBox">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Right Bottom Lamp</string>
         </property>
        </widget>
       </item>
@@ -570,7 +507,8 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>images/lamp.png</normaloff>images/lamp.png</iconset>
+          <normaloff>images/lamp.png</normaloff>
+          <normalon>images/lamp.gif</normalon>images/lamp.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -580,20 +518,152 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="4">
+       <widget class="QLineEdit" name="RightTopIpEdit">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>192.168.1.39</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="LeftBottomIpEdit">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>192.168.1.XX</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="LeftTopBox">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Left Top Lamp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="LeftTopIpEdit">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>192.168.1.37</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="LeftBottomBox">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Left Bottom Lamp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="LeftTopLamp">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string extracomment="Open"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>images/lamp.gif</normaloff>images/lamp.gif</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="LeftBottomLamp">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string extracomment="Open"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>images/lamp.png</normaloff>
+          <normalon>images/lamp.gif</normalon>images/lamp.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QCheckBox" name="RightTopBox">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Right Top Lamp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="videodelaySpin">
+        <property name="maximum">
+         <number>999999999</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>1000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Video Delay</string>
+        </property>
+       </widget>
+      </item>
      </layout>
-    </widget>
-    <widget class="QPushButton" name="discoverButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>86</y>
-       <width>121</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Discover Bulbs</string>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="videowidget" native="true">
@@ -614,9 +684,9 @@
     <widget class="QWidget" name="verticalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>-1</x>
        <y>1</y>
-       <width>591</width>
+       <width>601</width>
        <height>361</height>
       </rect>
      </property>
@@ -629,6 +699,66 @@
       </property>
      </layout>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="discoverButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>570</y>
+      <width>121</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Discover Bulbs</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="testButton">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>570</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Test Selected Lamp</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="saveSetButton">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>570</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Save Settings</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

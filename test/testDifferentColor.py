@@ -14,9 +14,9 @@ else:
     time.sleep(1)
     bulb.start_music(55443)
 while bulb.music_mode:
-    for r in range(0,255,5):
-        for g in range(0,255,5):
-            for b in range(0,255,5):
+    for r in range(1,256,5):
+        for g in range(1,256,5):
+            for b in range(1,256,5):
                 bulb.set_rgb(r,g,b)
                 time.sleep(0.1)
             time.sleep(0.1)

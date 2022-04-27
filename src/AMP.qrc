@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix=":images/">
+    <file>biglogo.png</file>
+    <file>logo.gif</file>
+  </qresource>
+</RCC>

@@ -1,16 +1,15 @@
+from PyQt5.QtWidgets import QGridLayout, QWidget, QDesktopWidget, QMessageBox, QApplication
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import uic
 from PyQt5.QtGui import QFont, QEnterEvent, QPixmap
 from PyQt5.QtCore import *
 import sys
 import os
-import time
-from PyQt5.QtWidgets import QGridLayout, QWidget, QDesktopWidget
-from Bulbs import *
-from configparser import ConfigParser
 from os.path import exists
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QApplication
+import time
+from configparser import ConfigParser
+from Bulbs import *
+
 class ALP_Settings(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super().__init__()
@@ -19,13 +18,16 @@ class ALP_Settings(QtWidgets.QMainWindow):
         self.setWindowTitle("Ambilight Media Player - Settings")
         ##Windows Seetings
         self.setTitleWidget = self.findChild(QtWidgets.QWidget, 'setTitleWidget')
+
         # Set the form without borders
         self.setWindowFlags(Qt.FramelessWindowHint)
-        # Set the default value of mouse tracking judgment trigger
-        self._move_drag = False
+
+        #Set _drag_status and MouseTracking
+        self._drag_status = False
         self.setMouseTracking(True)
         self.setWindowModality(QtCore.Qt.ApplicationModal)
         self.moveCenter()
+
         ##End Windows Seetings
         
         ##Connection Settings
@@ -58,10 +60,10 @@ class ALP_Settings(QtWidgets.QMainWindow):
         
         
         self.setCloseButton = self.findChild(QtWidgets.QPushButton, 'setCloseButton')
-        self.setCloseButton.clicked.connect(self.setCloseButtonClicked)
+        self.setCloseButton.clicked.connect(self.CloseButtonClicked)
 
         self.setCButton = self.findChild(QtWidgets.QPushButton, 'setCButton')
-        self.setCButton.clicked.connect(self.setCloseButtonClicked)
+        self.setCButton.clicked.connect(self.CloseButtonClicked)
 
         self.saveButton = self.findChild(QtWidgets.QPushButton, 'saveButton')
         self.saveButton.clicked.connect(self.saveSettings)
@@ -78,46 +80,40 @@ class ALP_Settings(QtWidgets.QMainWindow):
         
     ##Main Form Event Functions
     def moveCenter(self):
+        #Positions the window in the center of the screen
         fg = self.frameGeometry()
         centerpoint = QDesktopWidget().availableGeometry().center()
         fg.moveCenter(centerpoint)
         self.move(fg.topLeft())
         
     def eventFilter(self, obj, event):
-        # Event filter, used to solve the problem that the mouse returns to the standard mouse style after entering other controls
+        # Setting standard mouse style after entering other controls
         if isinstance(event, QEnterEvent):
             self.setCursor(Qt.ArrowCursor)
-        return super(ALP_Settings, self).eventFilter(obj, event)  # Note that MyWindow is the name of your class
-        
-    
-
+        return super(ALP_Settings, self).eventFilter(obj, event)
+ 
     def mousePressEvent(self, event):
-        # Override mouse click events
+        # If left click on the title bar area
         if (event.button() == Qt.LeftButton) and (event.y() < self.setTitleWidget.height()):
-            # Left click on the title bar area
-            self._move_drag = True
+            self._drag_status = True
             self.move_DragPosition = event.globalPos() - self.pos()
             event.accept()
 
     def mouseMoveEvent(self, QMouseEvent):
-        if Qt.LeftButton and self._move_drag:
+        if Qt.LeftButton and self._drag_status:
             # Title bar drag and drop window position
             self.move(QMouseEvent.globalPos() - self.move_DragPosition)
             QMouseEvent.accept()
-    
-
+ 
     def mouseReleaseEvent(self, QMouseEvent):
-        # After the mouse is released, each trigger is reset
-        self._move_drag = False
+        # Reset _drag_status
+        self._drag_status = False
     ##End Main Form Event Functions    
-
-    
 
     ##Functions
     def setLabel(self,label,char):
         label.setText(char)
         label.repaint()
-        
         
     def loadSettings(self):
         if exists('settings.ini') :
@@ -165,7 +161,7 @@ class ALP_Settings(QtWidgets.QMainWindow):
             self.thirdWidget.setVisible(True)
             self.fourthWidget.setVisible(True)
             
-    def setCloseButtonClicked(self):
+    def CloseButtonClicked(self):
         self.close()
         
     def discoverButtonClicked(self):

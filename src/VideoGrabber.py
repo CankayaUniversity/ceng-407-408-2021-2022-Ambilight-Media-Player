@@ -1,9 +1,7 @@
 from PyQt5.QtCore import QDir, Qt, QUrl, pyqtSignal, QPoint, QRect, QObject
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QVideoFrame, QAbstractVideoSurface, QAbstractVideoBuffer, QVideoSurfaceFormat
 from PyQt5.QtMultimediaWidgets import QVideoWidget
-from PyQt5.QtWidgets import (QApplication, QFileDialog, QHBoxLayout, QLabel,
-        QPushButton, QSizePolicy, QSlider, QStyle, QVBoxLayout, QWidget)
-from PyQt5.QtWidgets import QMainWindow,QWidget, QPushButton, QAction
+from PyQt5.QtWidgets import QApplication, QFileDialog, QHBoxLayout, QLabel, QPushButton, QSizePolicy, QSlider, QStyle, QVBoxLayout, QWidget, QMainWindow,QWidget, QPushButton, QAction
 from PyQt5.QtGui import QIcon, QPainter, QImage
 
 class VideoFrameGrabber(QAbstractVideoSurface):
@@ -46,7 +44,6 @@ class VideoFrameGrabber(QAbstractVideoSurface):
     def stop(self):
         self.currentFrame = QVideoFrame()
         self.targetRect = QRect()
-        #super().stop()
         self.widget.update()
 
     def present(self, frame):
@@ -55,12 +52,10 @@ class VideoFrameGrabber(QAbstractVideoSurface):
             cloneFrame.map(QAbstractVideoBuffer.ReadOnly)
             image = QImage(cloneFrame.bits(), cloneFrame.width(), cloneFrame.height(),
                            QVideoFrame.imageFormatFromPixelFormat(cloneFrame.pixelFormat()))
-            self.frameAvailable.emit(image)  # this is very important
+            self.frameAvailable.emit(image)
             cloneFrame.unmap()
-
         if self.surfaceFormat().pixelFormat() != frame.pixelFormat() or self.surfaceFormat().frameSize() != frame.size():
             self.setError(QAbstractVideoSurface.IncorrectFormatError)
-            #self.stop()
             return False
         else:
             self.currentFrame = frame

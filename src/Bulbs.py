@@ -32,7 +32,6 @@ def testBulb(self,ip):
                 pass
             bulb.turn_on()
             bulb.start_music(2000)
-            
             bulb.set_rgb(255,255,255)
             time.sleep(1)
             bulb.turn_off()
@@ -41,7 +40,6 @@ def testBulb(self,ip):
             time.sleep(1)
             bulb.set_rgb(255,255,255)
             bulb=None
-            #bulb.turn_off()
             return True
         except:
             bulb=None

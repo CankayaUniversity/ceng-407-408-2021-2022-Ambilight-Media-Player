@@ -2,52 +2,29 @@ import sys
 import os
 from os.path import exists
 from configparser import ConfigParser
-
 import time
-import colorsys
-from PIL import Image
-
 import numpy as np
 import numpy
-import math
 import cv2
 
-from sklearn.cluster import KMeans
-from collections import Counter
-import wcag_contrast_ratio as contrast
-
-
 import PyQt5
-from PyQt5 import QtCore, QtWidgets
-from PyQt5 import QtGui
+from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtCore import * 
 from PyQt5.QtGui import * 
 from PyQt5.QtWidgets import *
-#from PyQt5.QtCore import QUrl, Qt
 from PyQt5 import QtWidgets
-#from PyQt5.QtWidgets import QFileDialog
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox, QMainWindow, QWidget, QDialog, QGridLayout, QWidget, QDesktopWidget
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QVideoFrame, QAbstractVideoSurface, QAbstractVideoBuffer, QVideoSurfaceFormat
-#from PyQt5.QtWidgets import QMessageBox
-
-#from PyQt5.QtCore import pyqtSlot, Qt, QPoint
-#from PyQt5.QtGui import QFont, QEnterEvent, QPixmap
-#from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QDialog
-#from PyQt5 import QtCore
-
-#from PyQt5.QtWidgets import QGridLayout, QWidget, QDesktopWidget
 
 import yeelight
 from yeelight.main import Bulb, discover_bulbs
-#from yeelight.main import discover_bulbs
 from yeelight import enums
 
 from Settings import ALP_Settings
+from AboutUs import ALP_AboutUs
 from Video import VideoWidget
 from VideoGrabber import VideoFrameGrabber
-from Dominant import DominantColors
-
+from Dominant import FindDominantColors
 
 class AL_Player(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -92,11 +69,12 @@ class AL_Player(QtWidgets.QMainWindow):
                     self.singleBulb = Bulb(self.firstBulbIp, effect="smooth")
                     try:
                         self.singleBulb.stop_music()
+                        time.sleep(1)
                     except:
                         pass
-                    time.sleep(1)
                     try:
-                        self.singleBulb.start_music(20000)
+                        self.singleBulb.start_music(50000)
+                        time.sleep(1)
                     except:
                         pass
                 elif self.bulbCount==1:
@@ -105,15 +83,15 @@ class AL_Player(QtWidgets.QMainWindow):
                     try:
                         self.leftBulb.stop_music()
                         self.rightBulb.stop_music()
+                        time.sleep(1)
                     except:
                         pass
-                    time.sleep(1)
                     try:
-                        self.leftBulb.start_music(20000)
-                        self.rightBulb.start_music(20000)
+                        self.leftBulb.start_music(50000)
+                        self.rightBulb.start_music(50000)
+                        time.sleep(1)
                     except:
                         pass
-                    
                 elif self.bulbCount==2:
                     self.leftTopBulb = Bulb(self.firstBulbIp, effect="smooth")
                     self.rightTopBulb = Bulb(self.secondBulbIp, effect="smooth")
@@ -124,14 +102,15 @@ class AL_Player(QtWidgets.QMainWindow):
                         self.rightTopBulb.stop_music()
                         self.leftBottomBulb.stop_music()
                         self.rightBottomBulb.stop_music()
+                        time.sleep(1)
                     except:
                         pass
-                    time.sleep(1)
                     try:
-                        self.leftTopBulb.start_music(20000)
-                        self.rightTopBulb.start_music(20000)
-                        self.leftBottomBulb.start_music(20000)
-                        self.rightBottomBulb.start_music(20000)
+                        self.leftTopBulb.start_music(50000)
+                        self.rightTopBulb.start_music(50000)
+                        self.leftBottomBulb.start_music(50000)
+                        self.rightBottomBulb.start_music(50000)
+                        time.sleep(1)
                     except:
                         pass
                 self.AMLStatus=True
@@ -189,7 +168,7 @@ class AL_Player(QtWidgets.QMainWindow):
         
         
         self.playbutton = self.findChild(QtWidgets.QPushButton, 'playpauseButton')
-        self.playbutton.clicked.connect(self.playclick)
+        self.playbutton.clicked.connect(self.playClick)
 
         self.preButton = self.findChild(QtWidgets.QPushButton, 'fwdButton')
         self.preButton.clicked.connect(self.setPrev)
@@ -212,7 +191,7 @@ class AL_Player(QtWidgets.QMainWindow):
         ##End Connection Settings
 
         ##Create VideoWidget
-        self.videoWidget = VideoWidget()
+        self.videoWidget = VideoWidget(self)
         self.videoLayout = self.findChild(QtWidgets.QVBoxLayout, 'playvideoLayout')
         self.videoLayout.addWidget(self.videoWidget)
         ##End VideoWidget
@@ -233,7 +212,10 @@ class AL_Player(QtWidgets.QMainWindow):
         
         
         self.myMenu.addSeparator()
-        self.myMenu.addAction(QtWidgets.QAction('About Me', self))
+        aUsAction=QtWidgets.QAction('About Us', self)
+        aUsAction.triggered.connect(self.aboutUs)
+        self.myMenu.addAction(aUsAction)
+        
         self.myMenu.addSeparator()
         closeAction=QtWidgets.QAction('Exit', self)
         closeAction.triggered.connect(self.closeButtonClicked)
@@ -270,17 +252,18 @@ class AL_Player(QtWidgets.QMainWindow):
 
     ##Main Form Event Functions
     def moveCenter(self):
+        #Positions the window in the center of the screen
         fg = self.frameGeometry()
         centerpoint = QDesktopWidget().availableGeometry().center()
         fg.moveCenter(centerpoint)
         self.move(fg.topLeft())
         
     def eventFilter(self, obj, event):
-        # Event filter, used to solve the problem that the mouse returns to the standard mouse style after entering other controls
+        # Setting standard mouse style after entering other controls
         if isinstance(event, QEnterEvent):
             self.setCursor(Qt.ArrowCursor)
-        return super(AL_Player, self).eventFilter(obj, event)  # Note that MyWindow is the name of your class
-        # return QWidget.eventFilter(self, obj, event)  # This is fine, but be careful to change the window type
+        return super(AL_Player, self).eventFilter(obj, event)
+        
 
     def resizeEvent(self, QResizeEvent):
         # Custom window sizing events
@@ -295,54 +278,40 @@ class AL_Player(QtWidgets.QMainWindow):
     def mousePressEvent(self, event):
         # Override mouse click events
         if (event.button() == Qt.LeftButton) and (event.pos() in self._corner_rect):
-            # Left click the border area in the lower right corner
             self._corner_drag = True
             event.accept()
         elif (event.button() == Qt.LeftButton) and (event.pos() in self._right_rect):
-            # Left click on the right border area
             self._right_drag = True
             event.accept()
         elif (event.button() == Qt.LeftButton) and (event.pos() in self._bottom_rect):
-            # Click the lower border area with the left mouse button
             self._bottom_drag = True
             event.accept()
         elif (event.button() == Qt.LeftButton) and (event.y() < self.titleWidget.height()):
-            # Left click on the title bar area
             self._move_drag = True
             self.move_DragPosition = event.globalPos() - self.pos()
             event.accept()
 
     def mouseMoveEvent(self, QMouseEvent):
-        # Determine mouse position and switch mouse gesture
-        if QMouseEvent.pos() in self._corner_rect:  # QMouseEvent.pos() get relative position
+        if QMouseEvent.pos() in self._corner_rect:  
             self.setCursor(Qt.SizeFDiagCursor)
         elif QMouseEvent.pos() in self._bottom_rect:
             self.setCursor(Qt.SizeVerCursor)
         elif QMouseEvent.pos() in self._right_rect:
             self.setCursor(Qt.SizeHorCursor)
-
-        # When the left mouse button click and meet the requirements of the click area, different window adjustments are realized
-        # There is no definition of the left and top five directions, mainly because the implementation is not difficult, but the effect is very poor. When dragging and dropping, the window flickers, and then study whether there is a better implementation
         if Qt.LeftButton and self._right_drag:
-            # Right adjust window width
             self.resize(QMouseEvent.pos().x(), self.height())
             QMouseEvent.accept()
         elif Qt.LeftButton and self._bottom_drag:
-            # Lower adjustment window height
             self.resize(self.width(), QMouseEvent.pos().y())
             QMouseEvent.accept()
         elif Qt.LeftButton and self._corner_drag:
-            #  Because my window is set with rounded corners, this size adjustment is useless
-            # Adjust the height and width at the same time in the lower right corner
             self.resize(QMouseEvent.pos().x(), QMouseEvent.pos().y())
             QMouseEvent.accept()
         elif Qt.LeftButton and self._move_drag:
-            # Title bar drag and drop window position
             self.move(QMouseEvent.globalPos() - self.move_DragPosition)
             QMouseEvent.accept()
 
     def mouseReleaseEvent(self, QMouseEvent):
-        # After the mouse is released, each trigger is reset
         self._move_drag = False
         self._corner_drag = False
         self._bottom_drag = False
@@ -359,12 +328,13 @@ class AL_Player(QtWidgets.QMainWindow):
                 self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
                 self.mediaPlayer2 = QMediaPlayer(None, QMediaPlayer.VideoSurface)
                 self.videoWidget2 = VideoWidget()
+                self.videoWidget2.resize(32,24)
                 self.grabber = VideoFrameGrabber(self.videoWidget2, self)
                 self.mediaPlayer.setVideoOutput(self.videoWidget)
                 self.mediaPlayer2.setVideoOutput(self.grabber)
                 self.grabber.frameAvailable.connect(self.process_frame)
                 self.mediaPlayer2.setMuted(True)
-                self.mediaPlayer.stateChanged.connect(self.StateChanged)
+                self.mediaPlayer.stateChanged.connect(self.stateChanged)
                 self.mediaPlayer.positionChanged.connect(self.positionChanged)
                 self.mediaPlayer.durationChanged.connect(self.durationChanged)
                 self.mediaPlayer.volumeChanged.connect(self.volumeChanged)
@@ -387,16 +357,25 @@ class AL_Player(QtWidgets.QMainWindow):
         self.settingsWindow = ALP_Settings(self)
         self.settingsWindow.show()
         
-    def playclick(self):
+    def aboutUs(self):
+        if self.mediaPlayer!=None:
+            self.mediaPlayer.pause()
+            self.mediaPlayer2.pause()
+            self.playbutton.setText("4")
+            self.playbutton.setChecked(False)
+        
+        self.aUsWindow = ALP_AboutUs(self)
+        #print( "aaa")
+        self.aUsWindow.show()
+        
+    def playClick(self):
         if self.mediaPlayer!=None:
             if self.playbutton.isChecked():
                 self.mediaPlayer.play()
                 self.mediaPlayer2.play()
-                self.playbutton.setText(";")
             else:
                 self.mediaPlayer.pause()
                 self.mediaPlayer2.pause()
-                self.playbutton.setText("4")
         
     def mutePlayer(self):
         if self.mediaPlayer!=None:
@@ -408,6 +387,7 @@ class AL_Player(QtWidgets.QMainWindow):
     
     def fullscreen(self):
         self.videoWidget.setFullScreen(True)
+        self.videoWidget.setCursor(Qt.BlankCursor)
 
     def positionChanged(self, position):
         self.positionSlider.setValue(position)
@@ -446,16 +426,22 @@ class AL_Player(QtWidgets.QMainWindow):
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
 
-    def StateChanged(self,status):
-        if status in [QMediaPlayer.EndOfMedia,QMediaPlayer.StoppedState]: 
+    def stateChanged(self,status):
+        if status in [QMediaPlayer.EndOfMedia,QMediaPlayer.StoppedState]:
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
+        if status in [QMediaPlayer.PausedState]:
+            self.mediaPlayer2.pause()
+            self.playbutton.setText("4")
+            self.playbutton.setChecked(False)
+        if status in [QMediaPlayer.PlayingState]:
+            self.playbutton.setText(";")
+            self.playbutton.setChecked(True)
             
     def process_frame(self, image):
         if self.AMLStatus:
             img_list=self.divideImage(self.convertQImageToMat(image))
             self.sendColor(img_list)
-            #print (self.AMLStatus)
 
     def divideImage(self,img):
         image_list=list()
@@ -499,21 +485,21 @@ class AL_Player(QtWidgets.QMainWindow):
             image_list.append(r3)
             return image_list
 
-    def convertQImageToMat(self,incomingImage):
-        '''  Converts a QImage into an opencv MAT format  '''
-        incomingImage = incomingImage.convertToFormat(4)
-        width = incomingImage.width()
-        height = incomingImage.height()
-        ptr = incomingImage.bits()
-        ptr.setsize(incomingImage.byteCount())
-        arr = np.array(ptr).reshape(height, width, 4)  #  Copies the data
+    def convertQImageToMat(self,sourceImage):
+        #Converts QImage to MAT format
+        sourceImage = sourceImage.convertToFormat(4)
+        width = sourceImage.width()
+        height = sourceImage.height()
+        ptr = sourceImage.bits()
+        ptr.setsize(sourceImage.byteCount())
+        arr = np.array(ptr).reshape(height, width, 4)
         return arr
     
     def sendColor(self,list):
         if self.bulbCount==0:
             img = list[0]
             clusters = 1
-            dc = DominantColors(img, clusters)
+            dc = FindDominantColors(img, clusters)
             singleColors = dc.dominantColors()
             singleR=int(singleColors[0,0])
             singleG=int(singleColors[0,1])
@@ -531,14 +517,14 @@ class AL_Player(QtWidgets.QMainWindow):
             leftimg = list[0]
             rightimg = list[1]
             clusters = 1
-            dc = DominantColors(leftimg, clusters) 
+            dc = FindDominantColors(leftimg, clusters) 
             doubleColors = dc.dominantColors()
             
             leftR=int(doubleColors[0,0])
             leftG=int(doubleColors[0,1])
             leftB=int(doubleColors[0,2])
 
-            dc = DominantColors(rightimg, clusters) 
+            dc = FindDominantColors(rightimg, clusters) 
             doubleColors = dc.dominantColors()
             rightR=int(doubleColors[0,0])
             rightG=int(doubleColors[0,1])
@@ -567,26 +553,26 @@ class AL_Player(QtWidgets.QMainWindow):
             rightBotimg = list[2]
             clusters = 1
             
-            dc = DominantColors(leftTopimg, clusters) 
+            dc = FindDominantColors(leftTopimg, clusters) 
             fourColors = dc.dominantColors()
             
             leftTopR=int(fourColors[0,0])
             leftTopG=int(fourColors[0,1])
             leftTopB=int(fourColors[0,2])
 
-            dc = DominantColors(rightTopimg, clusters) 
+            dc = FindDominantColors(rightTopimg, clusters) 
             fourColors = dc.dominantColors()
             rightTopR=int(fourColors[0,0])
             rightTopG=int(fourColors[0,1])
             rightTopB=int(fourColors[0,2])
 
-            dc = DominantColors(leftBotimg, clusters) 
+            dc = FindDominantColors(leftBotimg, clusters) 
             fourColors = dc.dominantColors()
             leftBotR=int(fourColors[0,0])
             leftBotG=int(fourColors[0,1])
             leftBotB=int(fourColors[0,2])
 
-            dc = DominantColors(rightBotimg, clusters) 
+            dc = FindDominantColors(rightBotimg, clusters) 
             fourColors = dc.dominantColors()
             rightBotR=int(fourColors[0,0])
             rightBotG=int(fourColors[0,1])
@@ -619,12 +605,9 @@ class AL_Player(QtWidgets.QMainWindow):
             except:
                 pass
         
-        
     ##End Media Player Functions
 
 if __name__ == '__main__':
-    
-    # Suitable for 2k high resolution screen, low resolution screen can be default
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)    
     app = QtWidgets.QApplication(sys.argv)
     mainWindow = AL_Player()

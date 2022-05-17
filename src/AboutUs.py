@@ -10,11 +10,12 @@ import time
 import threading
 
 class ALP_AboutUs(QtWidgets.QMainWindow):
-    X=4
+    X=5
     Y=260
     def __init__(self, parent=None):
         super().__init__()
-        self.uis = uic.loadUi(os.path.join(os.path.dirname(__file__), "AboutUs.ui"),self)
+        #self.uis = uic.loadUi(os.path.join(os.path.dirname(__file__), "About.ui"),self)
+        self.uis = uic.loadUi('./Settings/AboutUs.ui',self)
         self.setMainWindow = self.findChild(QtWidgets.QMainWindow, 'setMainForm')
         self.setWindowTitle("Ambilight Media Player - About Us")
         ##Windows Seetings

@@ -13,7 +13,7 @@ from Bulbs import *
 class ALP_Settings(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super().__init__()
-        self.uis = uic.loadUi(os.path.join(os.path.dirname(__file__), "Settings.ui"),self)
+        self.uis = uic.loadUi('./Settings/Settings.ui',self)
         self.setMainWindow = self.findChild(QtWidgets.QMainWindow, 'setMainForm')
         self.setWindowTitle("Ambilight Media Player - Settings")
         ##Windows Seetings
@@ -116,11 +116,11 @@ class ALP_Settings(QtWidgets.QMainWindow):
         label.repaint()
         
     def loadSettings(self):
-        if exists('settings.ini') :
+        if exists('./Settings/Settings.ini') :
             
             try:
                 getSettingObj = ConfigParser()
-                getSettingObj.read("settings.ini")
+                getSettingObj.read('./Settings/Settings.ini')
                 
                 countBulb= getSettingObj["COUNTBULB"]
                 self.countBulbBox.setCurrentIndex(int(countBulb["count"]))
@@ -230,7 +230,7 @@ class ALP_Settings(QtWidgets.QMainWindow):
         setSettingObj["DELAY"] = {
         "vdelay": self.videodelaySpin.value()
         }
-        with open('settings.ini', 'w') as set:
+        with open('./Settings/Settings.ini', 'w') as set:
             setSettingObj.write(set)
         
         popup= QMessageBox()

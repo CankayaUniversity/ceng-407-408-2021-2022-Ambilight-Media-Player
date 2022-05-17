@@ -29,7 +29,7 @@ from Dominant import FindDominantColors
 class AL_Player(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AL_Player, self).__init__(parent)
-        self.ui = uic.loadUi(os.path.join(os.path.dirname(__file__), "ALPlayer.ui"),self)
+        self.ui = uic.loadUi('./Settings/ALPlayer.ui',self)
         self.mainWindow = self.findChild(QtWidgets.QMainWindow, 'MainForm')
         self.mediaPlayer =None
         ##Read Settings and Initilaze Bulb
@@ -51,10 +51,10 @@ class AL_Player(QtWidgets.QMainWindow):
         self.leftBottomBulb=None
         self.rightBottomBulb=None
         
-        if exists('settings.ini') :
+        if exists('./Settings/Settings.ini') :
             try:
                 getSettingObj = ConfigParser()
-                getSettingObj.read("settings.ini")
+                getSettingObj.read('./Settings/Settings.ini')
                 countBulb= getSettingObj["COUNTBULB"]
                 self.bulbCount=int(countBulb["count"])
                 ipBulbs= getSettingObj["BULBS"]
@@ -170,12 +170,18 @@ class AL_Player(QtWidgets.QMainWindow):
         self.playbutton = self.findChild(QtWidgets.QPushButton, 'playpauseButton')
         self.playbutton.clicked.connect(self.playClick)
 
-        self.preButton = self.findChild(QtWidgets.QPushButton, 'fwdButton')
-        self.preButton.clicked.connect(self.setPrev)
+        self.fwdButton = self.findChild(QtWidgets.QPushButton, 'fwdButton')
+        self.fwdButton.clicked.connect(self.setFwd)
 
-        self.nextButton = self.findChild(QtWidgets.QPushButton, 'bwdButton')
+        self.bwdButton = self.findChild(QtWidgets.QPushButton, 'bwdButton')
+        self.bwdButton.clicked.connect(self.setBwd)
+
+        self.nextButton = self.findChild(QtWidgets.QPushButton, 'nextButton')
         self.nextButton.clicked.connect(self.setNext)
-        
+
+        self.prevButton = self.findChild(QtWidgets.QPushButton, 'prevButton')
+        self.prevButton.clicked.connect(self.setPrev)
+
         self.fullscrbutton = self.findChild(QtWidgets.QPushButton, 'fullScrButton')
         self.fullscrbutton.clicked.connect(self.fullscreen)
         
@@ -344,7 +350,7 @@ class AL_Player(QtWidgets.QMainWindow):
             self.mediaPlayer2.setMedia(QMediaContent(QUrl.fromLocalFile(self.fileName)))
             self.playingLabel.setText("Playing: "+self.fileName)
             QListWidgetItem(self.fileName,self.reclistWidget)
-            self.reclistWidget.setCurrentItem(self.reclistWidget.currentItem())
+            self.reclistWidget.setCurrentRow(self.reclistWidget.count()-1)
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
 
@@ -365,7 +371,6 @@ class AL_Player(QtWidgets.QMainWindow):
             self.playbutton.setChecked(False)
         
         self.aUsWindow = ALP_AboutUs(self)
-        #print( "aaa")
         self.aUsWindow.show()
         
     def playClick(self):
@@ -386,8 +391,10 @@ class AL_Player(QtWidgets.QMainWindow):
                 self.muteButton.setText("Xð")
     
     def fullscreen(self):
-        self.videoWidget.setFullScreen(True)
-        self.videoWidget.setCursor(Qt.BlankCursor)
+        if self.mediaPlayer!=None:
+            if self.mediaPlayer.state()in [QMediaPlayer.PausedState, QMediaPlayer.PlayingState]:
+                self.videoWidget.setFullScreen(True)
+                self.videoWidget.setCursor(Qt.BlankCursor)
 
     def positionChanged(self, position):
         self.positionSlider.setValue(position)
@@ -408,14 +415,45 @@ class AL_Player(QtWidgets.QMainWindow):
         if self.mediaPlayer!=None:
             self.mediaPlayer.setVolume(volume)
 
-    def setPrev(self,position):
+    def setFwd(self,position):
         if self.mediaPlayer!=None:
             self.mediaPlayer.setPosition(self.mediaPlayer.position()-1000)
 
-    def setNext(self,position):
+    def setBwd(self,position):
         if self.mediaPlayer!=None:
             self.mediaPlayer.setPosition(self.mediaPlayer.position()+1000)
 
+    def setNext(self):
+        current=self.reclistWidget.currentRow()
+        total=self.reclistWidget.count()-1
+        if current<total:
+            current+=1
+            self.reclistWidget.setCurrentRow(current)
+            if self.mediaPlayer!=None:
+                self.mediaPlayer.stop()
+                self.mediaPlayer2.stop()
+                file=self.reclistWidget.currentItem().text()
+                self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(file)))
+                self.mediaPlayer2.setMedia(QMediaContent(QUrl.fromLocalFile(file)))
+                self.playingLabel.setText("Playing: "+file)
+                self.playbutton.setText("4")
+                self.playbutton.setChecked(False)
+            
+    def setPrev(self):
+        current=self.reclistWidget.currentRow()
+        if current>0:
+            current-=1
+            self.reclistWidget.setCurrentRow(current)
+            if self.mediaPlayer!=None:
+                self.mediaPlayer.stop()
+                self.mediaPlayer2.stop()
+                file=self.reclistWidget.currentItem().text()
+                self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(file)))
+                self.mediaPlayer2.setMedia(QMediaContent(QUrl.fromLocalFile(file)))
+                self.playingLabel.setText("Playing: "+file)
+                self.playbutton.setText("4")
+                self.playbutton.setChecked(False)
+        
     def recListDblClick(self,item):
         if self.mediaPlayer !=None:
             self.mediaPlayer.stop()

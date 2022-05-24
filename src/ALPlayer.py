@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets
 from PyQt5 import uic
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer, QVideoFrame, QAbstractVideoSurface, QAbstractVideoBuffer, QVideoSurfaceFormat
+from PyQt5.QtMultimediaWidgets import QVideoWidget
 
 import yeelight
 from yeelight.main import Bulb, discover_bulbs
@@ -23,7 +24,7 @@ from yeelight import enums
 from Settings import ALP_Settings
 from AboutUs import ALP_AboutUs
 from Video import VideoWidget
-from VideoGrabber import VideoFrameGrabber
+from VideoGrabber import GrabVideoSurface
 from Dominant import FindDominantColors
 
 class AL_Player(QtWidgets.QMainWindow):
@@ -31,6 +32,7 @@ class AL_Player(QtWidgets.QMainWindow):
         super(AL_Player, self).__init__(parent)
         self.ui = uic.loadUi('./Settings/ALPlayer.ui',self)
         self.mainWindow = self.findChild(QtWidgets.QMainWindow, 'MainForm')
+        self.setStyleSheet('background-color: black;')
         self.mediaPlayer =None
         ##Read Settings and Initilaze Bulb
         self.firstBulbIp=None
@@ -68,55 +70,97 @@ class AL_Player(QtWidgets.QMainWindow):
                 if self.bulbCount==0:
                     self.singleBulb = Bulb(self.firstBulbIp, effect="smooth")
                     try:
+                        self.singleBulb.turn_off()
                         self.singleBulb.stop_music()
                         time.sleep(1)
                     except:
+                        self.AMLStatus=False
                         pass
                     try:
-                        self.singleBulb.start_music(50000)
+                        self.singleBulb.on()
+                        self.singleBulb.start_music(55443)
                         time.sleep(1)
                     except:
+                        self.AMLStatus=False
                         pass
+                    self.AMLStatus=True
                 elif self.bulbCount==1:
                     self.leftBulb = Bulb(self.firstBulbIp, effect="smooth")
                     self.rightBulb = Bulb(self.secondBulbIp, effect="smooth")
                     try:
+                        self.leftBulb.turn_off()
+                        self.rightBulb.turn_off()
                         self.leftBulb.stop_music()
                         self.rightBulb.stop_music()
                         time.sleep(1)
                     except:
+                        self.AMLStatus=False
                         pass
                     try:
-                        self.leftBulb.start_music(50000)
-                        self.rightBulb.start_music(50000)
+                        self.leftBulb.turn_on()
+                        self.rightBulb.turn_on()
+                        self.leftBulb.start_music(55443)
+                        self.rightBulb.start_music(55443)
                         time.sleep(1)
                     except:
+                        self.AMLStatus=False
                         pass
+                    self.AMLStatus=True
                 elif self.bulbCount==2:
                     self.leftTopBulb = Bulb(self.firstBulbIp, effect="smooth")
                     self.rightTopBulb = Bulb(self.secondBulbIp, effect="smooth")
                     self.leftBottomBulb = Bulb(self.thirdBulbIp, effect="smooth")
                     self.rightBottomBulb = Bulb(self.fourthBulbIp, effect="smooth")
                     try:
+                        self.leftTopBulb.turn_off()
+                        self.rightTopBulb.turn_off()
+                        self.leftBottomBulb.turn_off()
+                        self.rightBottomBulb.turn_off()
+                        
                         self.leftTopBulb.stop_music()
                         self.rightTopBulb.stop_music()
                         self.leftBottomBulb.stop_music()
                         self.rightBottomBulb.stop_music()
                         time.sleep(1)
                     except:
+                        self.AMLStatus=False
                         pass
                     try:
-                        self.leftTopBulb.start_music(50000)
-                        self.rightTopBulb.start_music(50000)
-                        self.leftBottomBulb.start_music(50000)
-                        self.rightBottomBulb.start_music(50000)
+                        self.leftTopBulb.turn_on()
+                        self.rightTopBulb.turn_on()
+                        self.leftBottomBulb.turn_on()
+                        self.rightBottomBulb.turn_on()
+                        
+                        self.leftTopBulb.start_music(55443)
+                        self.rightTopBulb.start_music(55443)
+                        self.leftBottomBulb.start_music(55443)
+                        self.rightBottomBulb.start_music(55443)
                         time.sleep(1)
                     except:
+                        self.AMLStatus=False
                         pass
-                self.AMLStatus=True
+                    self.AMLStatus=True
+                
             except:
                 self.AMLStatus=False
                 pass
+
+            if self.bulbCount==0 and self.singleBulb.music_mode:
+                self.AMLStatus=True
+            elif self.bulbCount==1 and self.leftBulb.music_mode and self.rightBulb.music_mode:
+                self.AMLStatus=True
+            elif self.bulbCount==2and self.leftTopBulb.music_mode and self.rightTopBulb.music_mode and self.leftBottomBulb.music_mode and self.rightBottomBulb.music_mode :
+                self.AMLStatus=True
+            else:
+                self.AMLStatus=False
+
+            #print(self.leftBulb.music_mode)
+            #print(self.rightBulb.music_mode)
+            #print(self.leftTopBulb.music_mode)
+            #print(self.rightTopBulb.music_mode)
+            #print(self.leftBottomBulb.music_mode)
+            #print(self.rightBottomBulb.music_mode)
+
         else:
             popup= QMessageBox()
             popup.setWindowTitle("Adjustment Issue")
@@ -183,7 +227,7 @@ class AL_Player(QtWidgets.QMainWindow):
         self.prevButton.clicked.connect(self.setPrev)
 
         self.fullscrbutton = self.findChild(QtWidgets.QPushButton, 'fullScrButton')
-        self.fullscrbutton.clicked.connect(self.fullscreen)
+        self.fullscrbutton.clicked.connect(self.fullScreen)
         
         
         self.muteButton = self.findChild(QtWidgets.QPushButton, 'muteButton')
@@ -193,11 +237,19 @@ class AL_Player(QtWidgets.QMainWindow):
         
         self.reclistWidget=self.findChild(QtWidgets.QListWidget, 'reclistWidget')
         self.reclistWidget.itemDoubleClicked.connect(self.recListDblClick)
+
+        self.shortCut = QShortcut(QKeySequence("F"), self)
+        self.shortCut.activated.connect(self.fullScreen)
+        self.shortCut = QShortcut(QKeySequence("Esc"), self)
+        self.shortCut.activated.connect(self.normalScreen)
+        
         
         ##End Connection Settings
 
         ##Create VideoWidget
         self.videoWidget = VideoWidget(self)
+        self.grabVideoSurface = GrabVideoSurface(self)
+        self.videoWidget.setAutoFillBackground(True)
         self.videoLayout = self.findChild(QtWidgets.QVBoxLayout, 'playvideoLayout')
         self.videoLayout.addWidget(self.videoWidget)
         ##End VideoWidget
@@ -245,12 +297,12 @@ class AL_Player(QtWidgets.QMainWindow):
     def maxButtonClicked(self):
         if self.isMaximized():
             self.showNormal()
-            self.maxButton.setText('1')  # Toggle enlarge button icon
-            self.maxButton.setToolTip("<html><head/><body><p>Maximize</p></body></html>")
+            self.maxButton.setText('1')  
+            self.maxButton.setToolTip("Maximize")
         else:
             self.showMaximized()
             self.maxButton.setText('2')
-            self.maxButton.setToolTip("<html><head/><body><p>Normal</p></body></html>")
+            self.maxButton.setToolTip("Normal")
 
     def closeButtonClicked(self):
         self.close()
@@ -268,6 +320,9 @@ class AL_Player(QtWidgets.QMainWindow):
         # Setting standard mouse style after entering other controls
         if isinstance(event, QEnterEvent):
             self.setCursor(Qt.ArrowCursor)
+        if self.windowState()in[QtCore.Qt.WindowMinimized]:
+           # Window is minimised. Restore it.
+           self.setAttribute(Qt.WA_Mapped)
         return super(AL_Player, self).eventFilter(obj, event)
         
 
@@ -322,6 +377,12 @@ class AL_Player(QtWidgets.QMainWindow):
         self._corner_drag = False
         self._bottom_drag = False
         self._right_drag = False
+        
+    def changeEvent(self,event):
+        if event.type() == QEvent.WindowStateChange:
+            if not(self.isMinimized()):
+                self.setAttribute(Qt.WA_Mapped)
+                self.videoWidget.updateGeometry()
     ##End Main Form Event Functions
         
     
@@ -332,22 +393,16 @@ class AL_Player(QtWidgets.QMainWindow):
         if self.fileName != '':
             if self.mediaPlayer ==None:
                 self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
-                self.mediaPlayer2 = QMediaPlayer(None, QMediaPlayer.VideoSurface)
-                self.videoWidget2 = VideoWidget()
-                self.videoWidget2.resize(32,24)
-                self.grabber = VideoFrameGrabber(self.videoWidget2, self)
-                self.mediaPlayer.setVideoOutput(self.videoWidget)
-                self.mediaPlayer2.setVideoOutput(self.grabber)
-                self.grabber.frameAvailable.connect(self.process_frame)
-                self.mediaPlayer2.setMuted(True)
+                self.videoWidget.setMediaPlayer(self.mediaPlayer)
+                self.mediaPlayer.setVideoOutput([self.videoWidget.videoSurface(), self.grabVideoSurface])
                 self.mediaPlayer.stateChanged.connect(self.stateChanged)
                 self.mediaPlayer.positionChanged.connect(self.positionChanged)
                 self.mediaPlayer.durationChanged.connect(self.durationChanged)
                 self.mediaPlayer.volumeChanged.connect(self.volumeChanged)
+                
             self.mediaPlayer.stop()    
             self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(self.fileName)))
-            self.mediaPlayer2.stop()    
-            self.mediaPlayer2.setMedia(QMediaContent(QUrl.fromLocalFile(self.fileName)))
+            
             self.playingLabel.setText("Playing: "+self.fileName)
             QListWidgetItem(self.fileName,self.reclistWidget)
             self.reclistWidget.setCurrentRow(self.reclistWidget.count()-1)
@@ -357,7 +412,7 @@ class AL_Player(QtWidgets.QMainWindow):
     def openSettings(self):
         if self.mediaPlayer!=None:
             self.mediaPlayer.pause()
-            self.mediaPlayer2.pause()
+            
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
         self.settingsWindow = ALP_Settings(self)
@@ -366,7 +421,7 @@ class AL_Player(QtWidgets.QMainWindow):
     def aboutUs(self):
         if self.mediaPlayer!=None:
             self.mediaPlayer.pause()
-            self.mediaPlayer2.pause()
+            
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
         
@@ -377,11 +432,9 @@ class AL_Player(QtWidgets.QMainWindow):
         if self.mediaPlayer!=None:
             if self.playbutton.isChecked():
                 self.mediaPlayer.play()
-                self.mediaPlayer2.play()
             else:
                 self.mediaPlayer.pause()
-                self.mediaPlayer2.pause()
-        
+       
     def mutePlayer(self):
         if self.mediaPlayer!=None:
             self.mediaPlayer.setMuted(not self.mediaPlayer.isMuted())
@@ -390,15 +443,25 @@ class AL_Player(QtWidgets.QMainWindow):
             else:
                 self.muteButton.setText("Xð")
     
-    def fullscreen(self):
+    def fullScreen(self):
         if self.mediaPlayer!=None:
             if self.mediaPlayer.state()in [QMediaPlayer.PausedState, QMediaPlayer.PlayingState]:
                 self.videoWidget.setFullScreen(True)
                 self.videoWidget.setCursor(Qt.BlankCursor)
-
+                
+    def normalScreen(self):
+        if self.mediaPlayer!=None:
+            if self.mediaPlayer.state()in [QMediaPlayer.PausedState, QMediaPlayer.PlayingState]:
+                self.videoWidget.setFullScreen(False)
+                self.videoWidget.setCursor(Qt.ArrowCursor)
+                    
     def positionChanged(self, position):
         self.positionSlider.setValue(position)
-        self.mediaPlayer2.setPosition(position+self.delay)
+        if self.AMLStatus:
+            image = self.grabVideoSurface.getCurrentFrame
+            if not image.isNull():
+                img_list=self.divideImage(self.convertQImageToMat(image))
+                self.sendColor(img_list)
         
     def durationChanged(self, duration):
         self.positionSlider.setRange(0, duration)
@@ -431,10 +494,10 @@ class AL_Player(QtWidgets.QMainWindow):
             self.reclistWidget.setCurrentRow(current)
             if self.mediaPlayer!=None:
                 self.mediaPlayer.stop()
-                self.mediaPlayer2.stop()
+                
                 file=self.reclistWidget.currentItem().text()
                 self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(file)))
-                self.mediaPlayer2.setMedia(QMediaContent(QUrl.fromLocalFile(file)))
+                
                 self.playingLabel.setText("Playing: "+file)
                 self.playbutton.setText("4")
                 self.playbutton.setChecked(False)
@@ -446,10 +509,10 @@ class AL_Player(QtWidgets.QMainWindow):
             self.reclistWidget.setCurrentRow(current)
             if self.mediaPlayer!=None:
                 self.mediaPlayer.stop()
-                self.mediaPlayer2.stop()
+                
                 file=self.reclistWidget.currentItem().text()
                 self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(file)))
-                self.mediaPlayer2.setMedia(QMediaContent(QUrl.fromLocalFile(file)))
+                
                 self.playingLabel.setText("Playing: "+file)
                 self.playbutton.setText("4")
                 self.playbutton.setChecked(False)
@@ -457,9 +520,9 @@ class AL_Player(QtWidgets.QMainWindow):
     def recListDblClick(self,item):
         if self.mediaPlayer !=None:
             self.mediaPlayer.stop()
-            self.mediaPlayer2.stop()
+            
             self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(item.text())))
-            self.mediaPlayer2.setMedia(QMediaContent(QUrl.fromLocalFile(item.text())))
+            
             self.playingLabel.setText("Playing: "+item.text())
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
@@ -468,19 +531,14 @@ class AL_Player(QtWidgets.QMainWindow):
         if status in [QMediaPlayer.EndOfMedia,QMediaPlayer.StoppedState]:
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
+            self.mediaPlayer.setPosition(0)
         if status in [QMediaPlayer.PausedState]:
-            self.mediaPlayer2.pause()
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
         if status in [QMediaPlayer.PlayingState]:
             self.playbutton.setText(";")
             self.playbutton.setChecked(True)
             
-    def process_frame(self, image):
-        if self.AMLStatus:
-            img_list=self.divideImage(self.convertQImageToMat(image))
-            self.sendColor(img_list)
-
     def divideImage(self,img):
         image_list=list()
         if self.bulbCount==0:
@@ -505,22 +563,22 @@ class AL_Player(QtWidgets.QMainWindow):
             height = img.shape[0]
             width = img.shape[1]
             width_cutoff = width // 2
-            l2 = img[:, :width_cutoff]
-            l1 = img[:, width_cutoff:]
-            l2 = cv2.rotate(l2, cv2.ROTATE_90_COUNTERCLOCKWISE)
-            image_list.append(l2)
-            l1 = cv2.rotate(l1, cv2.ROTATE_90_COUNTERCLOCKWISE)
-            image_list.append(l1)
+            left12 = img[:, :width_cutoff]
+            left11 = img[:, width_cutoff:]
+            left12 = cv2.rotate(left12, cv2.ROTATE_90_COUNTERCLOCKWISE)
+            image_list.append(left12)
+            left11 = cv2.rotate(left11, cv2.ROTATE_90_COUNTERCLOCKWISE)
+            image_list.append(left11)
             img = cv2.rotate(right1, cv2.ROTATE_90_CLOCKWISE)
             height = img.shape[0]
             width = img.shape[1]
             width_cutoff = width // 2
-            r4 = img[:, :width_cutoff]
-            r3 = img[:, width_cutoff:]
-            r4 = cv2.rotate(r4, cv2.ROTATE_90_COUNTERCLOCKWISE)
-            image_list.append(r4)
-            r3 = cv2.rotate(r3, cv2.ROTATE_90_COUNTERCLOCKWISE)
-            image_list.append(r3)
+            right12 = img[:, :width_cutoff]
+            right11 = img[:, width_cutoff:]
+            right12 = cv2.rotate(right12, cv2.ROTATE_90_COUNTERCLOCKWISE)
+            image_list.append(right12)
+            right11 = cv2.rotate(right11, cv2.ROTATE_90_COUNTERCLOCKWISE)
+            image_list.append(right11)
             return image_list
 
     def convertQImageToMat(self,sourceImage):

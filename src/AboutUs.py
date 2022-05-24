@@ -74,7 +74,6 @@ class ALP_AboutUs(QtWidgets.QMainWindow):
     ##Functions
     
     def setLabelCoord(self):
-      #threading.Timer(1.0, self.setLabelCoord).start()
       while True:  
           self.marqueeLabel.move(self.X,self.Y)
           self.Y=self.Y-1
@@ -82,11 +81,8 @@ class ALP_AboutUs(QtWidgets.QMainWindow):
           self.marqueeLabel.repaint()
           if self.Y<-154:
               self.Y=260
-          #print( "aaa")
-
+          
     def CloseButtonClicked(self):
-        #self.t1.stop()
         self.close()  
-    
-    
+  
     ##End Functions

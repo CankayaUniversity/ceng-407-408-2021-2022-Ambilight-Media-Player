@@ -1,7 +1,6 @@
 import yeelight
 import time
-from yeelight.main import Bulb
-from yeelight.main import discover_bulbs
+from yeelight.main import Bulb, discover_bulbs
 from yeelight import enums
 from PyQt5.QtWidgets import QMessageBox
 
@@ -31,7 +30,7 @@ def testBulb(self,ip):
             except:
                 pass
             bulb.turn_on()
-            bulb.start_music(2000)
+            bulb.start_music(55443)
             bulb.set_rgb(255,255,255)
             time.sleep(1)
             bulb.turn_off()

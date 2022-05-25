@@ -20,10 +20,10 @@ See the [Project Web Site](https://ambilightbp.wixsite.com/project "WebSite") fo
 
 # Installing and Running the Project
 
-Will be published soon.
+Please click ["Ambilight Media Player Web Site"](https://ambilightbp.wixsite.com/project) and click "Download" right menubar, after that follow the installation guide. That is all.
 
 ### For production
-See [Installation Guide](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/wiki/Installation-Guide).
+See [Installation Guide](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/blob/main/docs/amp_installguide.pdf).
 
 
 [![cankaya](https://static.wixstatic.com/media/6b165c_e007cd21cbc7414382363568f0849794~mv2.png/v1/crop/x_0,y_0,w_70,h_68,q_85/6b165c_e007cd21cbc7414382363568f0849794~mv2.webp)](https://www.cankaya.edu.tr) &emsp;

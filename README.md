@@ -22,6 +22,11 @@ See the [Project Web Site](https://ambilightbp.wixsite.com/project "WebSite") fo
 
 Please click ["Ambilight Media Player Web Site"](https://ambilightbp.wixsite.com/project) and click "Download" right menubar, after that follow the installation guide. That is all.
 
+OR
+
+You can check our Github [Release page](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/releases/tag/v1.0). 
+
+
 ### For production
 See [Installation Guide](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/blob/main/docs/amp_installguide.pdf) and [User Manual](https://github.com/CankayaUniversity/ceng-407-408-2021-2022-Ambilight-Media-Player/blob/main/docs/amp_usersmanual.pdf).
 

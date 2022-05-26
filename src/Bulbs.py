@@ -10,16 +10,15 @@ def __init__(self):
 def discoverBulbs(self):
     bulbs = discover_bulbs(timeout=5, interface=False)
     time.sleep(1)
-    list=""
-    i=0
+    bulbList=[]
     for b in bulbs:
-        i=i+1
-        list=list+str(i)+". Ip Address of the Lamp= "+b['ip']+"\n"
+        bulbList.append(b['ip'])
     popup= QMessageBox()
     popup.setWindowTitle("Discovery Results")
-    popup.setText(list)
+    popup.setText("Search completed")
     popup.setIcon(QMessageBox.Information)
     res= popup.exec_()
+    return bulbList
     
 def testBulb(self,ip):
         bulb = Bulb(ip, effect="smooth")

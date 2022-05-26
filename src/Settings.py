@@ -36,24 +36,27 @@ class ALP_Settings(QtWidgets.QMainWindow):
         self.thirdWidget = self.findChild(QtWidgets.QWidget, 'thirdWidget')
         self.fourthWidget = self.findChild(QtWidgets.QWidget, 'fourthWidget')
 
-        self.firstChkLabel = self.findChild(QtWidgets.QLabel, 'firstChkLabel')
-        self.secondChkLabel = self.findChild(QtWidgets.QLabel, 'secondChkLabel')
-        self.thirdChkLabel = self.findChild(QtWidgets.QLabel, 'thirdChkLabel')
-        self.fourthChkLabel = self.findChild(QtWidgets.QLabel, 'fourthChkLabel')
+        self.t1Button = self.findChild(QtWidgets.QPushButton, 't1Button')
+        self.t2Button = self.findChild(QtWidgets.QPushButton, 't2Button')
+        self.t3Button = self.findChild(QtWidgets.QPushButton, 't3Button')
+        self.t4Button = self.findChild(QtWidgets.QPushButton, 't4Button')
+        
+        self.setIcon(self.t1Button,12)
+        self.setIcon(self.t2Button,12)
+        self.setIcon(self.t3Button,12)
+        self.setIcon(self.t4Button,12)
 
-        self.setLabel(self.firstChkLabel,"")
-        self.setLabel(self.secondChkLabel,"")
-        self.setLabel(self.thirdChkLabel,"")
-        self.setLabel(self.fourthChkLabel,"")
-        
-        self.firstEdit=self.findChild(QtWidgets.QLineEdit, 'firstEdit')
-        self.secondEdit=self.findChild(QtWidgets.QLineEdit, 'secondEdit')
-        self.thirdEdit=self.findChild(QtWidgets.QLineEdit, 'thirdEdit')
-        self.fourthEdit=self.findChild(QtWidgets.QLineEdit, 'fourthEdit')
-
-        self.videodelaySpin=self.findChild(QtWidgets.QSpinBox, 'videodelaySpin')
+        self.t1Button.clicked.connect(lambda:self.testLamp(0))
+        self.t2Button.clicked.connect(lambda:self.testLamp(1))
+        self.t3Button.clicked.connect(lambda:self.testLamp(2))
+        self.t4Button.clicked.connect(lambda:self.testLamp(3))
         
         
+        self.firstIpCombo = self.findChild(QtWidgets.QComboBox, 'firstIpCombo')
+        self.secondIpCombo = self.findChild(QtWidgets.QComboBox, 'secondIpCombo')
+        self.thirdIpCombo = self.findChild(QtWidgets.QComboBox, 'thirdIpCombo')
+        self.fourthIpCombo = self.findChild(QtWidgets.QComboBox, 'fourthIpCombo')
+    
         self.countBulbBox = self.findChild(QtWidgets.QComboBox, 'countBulbBox')
         self.countBulbBox.currentIndexChanged.connect(self.countBulbBoxIndexChanged)
         self.countBulbBox.setCurrentIndex(-1)
@@ -71,9 +74,6 @@ class ALP_Settings(QtWidgets.QMainWindow):
         self.discoverButton = self.findChild(QtWidgets.QPushButton, 'discoverButton')
         self.discoverButton.clicked.connect(self.discoverButtonClicked)
 
-        self.testLampButton = self.findChild(QtWidgets.QPushButton, 'testLampButton')
-        self.testLampButton.clicked.connect(self.testLampButtonClicked)
-        
         self.loadSettings()
         
         ##End Connection Settings
@@ -111,9 +111,9 @@ class ALP_Settings(QtWidgets.QMainWindow):
     ##End Main Form Event Functions    
 
     ##Functions
-    def setLabel(self,label,char):
-        label.setText(char)
-        label.repaint()
+    def setIcon(self,obj,icon):
+        #12=SP_MessageBoxQuestion, 45=SP_DialogApplyButton, 40=SP_DialogCancelButton, 68=SP_MediaVolume, 69=SP_MediaVolumeMuted
+        obj.setIcon(self.style().standardIcon(icon))
         
     def loadSettings(self):
         if exists('./Settings/Settings.ini') :
@@ -126,14 +126,16 @@ class ALP_Settings(QtWidgets.QMainWindow):
                 self.countBulbBox.setCurrentIndex(int(countBulb["count"]))
                 
                 ipBulbs= getSettingObj["BULBS"]
-                
-                self.firstEdit.setText(ipBulbs["firstIp"])
-                self.secondEdit.setText(ipBulbs["secondIp"])
-                self.thirdEdit.setText(ipBulbs["thirdIp"])
-                self.fourthEdit.setText(ipBulbs["fourthIp"])
-
-                vDelay = getSettingObj["DELAY"]
-                self.videodelaySpin.setValue(int(vDelay["vdelay"]))
+                self.firstIpCombo.addItem(ipBulbs["firstIp"])
+                self.secondIpCombo.addItem(ipBulbs["secondIp"])
+                self.thirdIpCombo.addItem(ipBulbs["thirdIp"])
+                self.fourthIpCombo.addItem(ipBulbs["fourthIp"])
+                '''
+                self.firstIpCombo.setCurrentText(ipBulbs["firstIp"])
+                self.secondIpCombo.setCurrentText(ipBulbs["secondIp"])
+                self.thirdIpCombo.setCurrentText(ipBulbs["thirdIp"])
+                self.fourthIpCombo.setCurrentText(ipBulbs["fourthIp"])
+                '''
             except:
                 pass
             
@@ -165,55 +167,42 @@ class ALP_Settings(QtWidgets.QMainWindow):
         self.close()
         
     def discoverButtonClicked(self):
-        discoverBulbs(self)
-
-    def testLampButtonClicked(self):
-        index = self.countBulbBox.currentIndex()
-        if index==0:
-            res=testBulb(self,self.firstEdit.text())
+        bList=[]
+        bList=discoverBulbs(self)
+        for b in bList:
+            self.firstIpCombo.addItem(b)
+            self.secondIpCombo.addItem(b)
+            self.thirdIpCombo.addItem(b)
+            self.fourthIpCombo.addItem(b)
+            
+    def testLamp(self,lampNum):
+        if lampNum==0:
+            res=testBulb(self,self.firstIpCombo.currentText())
             if res:
-                self.setLabel(self.firstChkLabel,"P")
+                self.setIcon(self.t1Button,45)
             else:
-                self.setLabel(self.firstChkLabel,"O")
+                self.setIcon(self.t1Button,40)
+        elif lampNum==1:
+            res=testBulb(self,self.secondIpCombo.currentText())
+            if res:
+                self.setIcon(self.t2Button,45)
+            else:
+                self.setIcon(self.t2Button,40)
+
+        elif lampNum==2:
+            res=testBulb(self,self.thirdIpCombo.currentText())
+            if res:
+                self.setIcon(self.t3Button,45)
+            else:
+                self.setIcon(self.t3Button,40)
                 
-        elif index==1:
-            res1=testBulb(self,self.firstEdit.text())
-            if res1:
-                self.setLabel(self.firstChkLabel,"P")
+        elif lampNum==3:
+            res=testBulb(self,self.fourthIpCombo.currentText())
+            if res:
+                self.setIcon(self.t4Button,45)
             else:
-                self.setLabel(self.firstChkLabel,"O")
-
-            res2=testBulb(self,self.secondEdit.text())
-            if res2:
-                self.setLabel(self.secondChkLabel,"P")
-            else:
-                self.setLabel(self.secondChkLabel,"O")
-
-        elif index==2:
-            res1=testBulb(self,self.firstEdit.text())
-            if res1:
-                self.setLabel(self.firstChkLabel,"P")
-            else:
-                self.setLabel(self.firstChkLabel,"O")
-
-            res2=testBulb(self,self.secondEdit.text())
-            if res2:
-                self.setLabel(self.secondChkLabel,"P")
-            else:
-                self.setLabel(self.secondChkLabel,"O")
-
-            res3=testBulb(self,self.thirdEdit.text())
-            if res3:
-                self.setLabel(self.thirdChkLabel,"P")
-            else:
-                self.setLabel(self.thirdChkLabel,"O")
-
-            res4=testBulb(self,self.fourthEdit.text())
-            if res4:
-                self.setLabel(self.fourthChkLabel,"P")
-            else:
-                self.setLabel(self.fourthChkLabel,"O")
-                
+                self.setIcon(self.t4Button,40)        
+              
     def saveSettings(self):
         setSettingObj = ConfigParser()
         
@@ -222,13 +211,10 @@ class ALP_Settings(QtWidgets.QMainWindow):
         }
         
         setSettingObj["BULBS"] = {
-        "firstIp": self.firstEdit.text(),
-        "secondIp": self.secondEdit.text(),
-        "thirdIp": self.thirdEdit.text(),
-        "fourthIp": self.fourthEdit.text()
-        }
-        setSettingObj["DELAY"] = {
-        "vdelay": self.videodelaySpin.value()
+        "firstIp": self.firstIpCombo.currentText(),
+        "secondIp": self.secondIpCombo.currentText(),
+        "thirdIp": self.thirdIpCombo.currentText(),
+        "fourthIp": self.fourthIpCombo.currentText()
         }
         with open('./Settings/Settings.ini', 'w') as set:
             setSettingObj.write(set)
@@ -240,4 +226,5 @@ class ALP_Settings(QtWidgets.QMainWindow):
         res= popup.exec_()
         time.sleep(1)
         sys.exit()
+    
     ##End Functions

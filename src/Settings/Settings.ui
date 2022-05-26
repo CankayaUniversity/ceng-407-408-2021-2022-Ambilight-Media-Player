@@ -310,6 +310,12 @@ QPushButton:pressed{
         </item>
         <item>
          <widget class="QWidget" name="widget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize">
            <size>
             <width>400</width>
@@ -395,9 +401,42 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
                      </font>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QComboBox{
-	color:white;
-	
+                     <string notr="true">QComboBox
+{
+    background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(84, 84, 84, 255),stop:1 rgba(59, 59, 59, 255));
+    border: 1px solid #000;
+    padding-left: 6px;
+    color: #ffffff;
+    height: 20px;
+
+}
+
+
+QComboBox::disabled
+{
+	background-color: #404040;
+	color: #656565;
+	border-color: #051a39;
+
+}
+
+
+QComboBox:on
+{
+    background-color: #b78620;
+	color: #000;
+
+}
+
+
+QComboBox QAbstractItemView
+{
+    background-color: #383838;
+    color: #ffffff;
+    border: 1px solid black;
+    selection-background-color: #b78620;
+    outline: 0;
+
 }</string>
                     </property>
                     <item>
@@ -523,7 +562,7 @@ border:none;
 </string>
                          </property>
                          <property name="text">
-                          <string>Ip Number of First Bulb</string>
+                          <string>Ip Number of Left Top Bulb</string>
                          </property>
                         </widget>
                        </item>
@@ -537,14 +576,14 @@ border:none;
                          </property>
                          <property name="sizeHint" stdset="0">
                           <size>
-                           <width>23</width>
+                           <width>45</width>
                            <height>5</height>
                           </size>
                          </property>
                         </spacer>
                        </item>
                        <item>
-                        <widget class="QLineEdit" name="firstEdit">
+                        <widget class="QComboBox" name="firstIpCombo">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -553,31 +592,99 @@ border:none;
                          </property>
                          <property name="minimumSize">
                           <size>
-                           <width>100</width>
+                           <width>130</width>
                            <height>0</height>
                           </size>
                          </property>
                          <property name="styleSheet">
-                          <string notr="true">QLineEdit{
-	color:white;
-	border:1 solid;
-}</string>
+                          <string notr="true">QComboBox
+{
+    background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(84, 84, 84, 255),stop:1 rgba(59, 59, 59, 255));
+    border: 1px solid #000;
+    padding-left: 6px;
+    color: #ffffff;
+    height: 15px;
+
+}
+
+
+QComboBox::disabled
+{
+	background-color: #404040;
+	color: #656565;
+	border-color: #051a39;
+
+}
+
+
+QComboBox:on
+{
+    background-color: #b78620;
+	color: #000;
+
+}
+
+
+QComboBox QAbstractItemView
+{
+    background-color: #383838;
+    color: #ffffff;
+    border: 1px solid black;
+    selection-background-color: #b78620;
+    outline: 0;
+
+}
+
+
+
+
+</string>
                          </property>
-                         <property name="inputMask">
-                          <string>000.000.000.000;_</string>
+                         <property name="editable">
+                          <bool>true</bool>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLabel" name="firstChkLabel">
-                         <property name="font">
-                          <font>
-                           <family>Wingdings 2</family>
-                           <pointsize>12</pointsize>
-                          </font>
+                        <widget class="QPushButton" name="t1Button">
+                         <property name="minimumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton:hover{
+	border-style: solid;
+	border-top-color:white;
+    border-bottom-color: white;
+    border-left-color: white;
+    border-right-color: white;
+	border-width: 2px;
+    border-radius:32px;
+	color: #d3dae3;
+	padding: 4px;
+}
+QPushButton:pressed{
+	border-style: solid;
+	border-top-color:rgb(255, 0, 255);
+    border-bottom-color: rgb(255, 0, 255);
+    border-left-color: rgb(255, 0, 255);
+    border-right-color:rgb(255, 0, 255);
+	border-width: 2px;
+    border-radius:32px;
+	color: #d3dae3;
+	padding: 4px;
+}</string>
                          </property>
                          <property name="text">
-                          <string>P</string>
+                          <string/>
                          </property>
                         </widget>
                        </item>
@@ -665,7 +772,7 @@ border:none;
 }</string>
                          </property>
                          <property name="text">
-                          <string>Ip Number of Second Bulb</string>
+                          <string>Ip Number of Right Top Bulb</string>
                          </property>
                         </widget>
                        </item>
@@ -679,14 +786,14 @@ border:none;
                          </property>
                          <property name="sizeHint" stdset="0">
                           <size>
-                           <width>5</width>
+                           <width>37</width>
                            <height>5</height>
                           </size>
                          </property>
                         </spacer>
                        </item>
                        <item>
-                        <widget class="QLineEdit" name="secondEdit">
+                        <widget class="QComboBox" name="secondIpCombo">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -695,31 +802,94 @@ border:none;
                          </property>
                          <property name="minimumSize">
                           <size>
-                           <width>100</width>
+                           <width>130</width>
                            <height>0</height>
                           </size>
                          </property>
                          <property name="styleSheet">
-                          <string notr="true">QLineEdit{
-	color:white;
-	border:1 solid;
+                          <string notr="true">QComboBox
+{
+    background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(84, 84, 84, 255),stop:1 rgba(59, 59, 59, 255));
+    border: 1px solid #000;
+    padding-left: 6px;
+    color: #ffffff;
+    height: 15px;
+
+}
+
+
+QComboBox::disabled
+{
+	background-color: #404040;
+	color: #656565;
+	border-color: #051a39;
+
+}
+
+
+QComboBox:on
+{
+    background-color: #b78620;
+	color: #000;
+
+}
+
+
+QComboBox QAbstractItemView
+{
+    background-color: #383838;
+    color: #ffffff;
+    border: 1px solid black;
+    selection-background-color: #b78620;
+    outline: 0;
+
 }</string>
                          </property>
-                         <property name="inputMask">
-                          <string>000.000.000.000;_</string>
+                         <property name="editable">
+                          <bool>true</bool>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLabel" name="secondChkLabel">
-                         <property name="font">
-                          <font>
-                           <family>Wingdings 2</family>
-                           <pointsize>12</pointsize>
-                          </font>
+                        <widget class="QPushButton" name="t2Button">
+                         <property name="minimumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton:hover{
+	border-style: solid;
+	border-top-color:white;
+    border-bottom-color: white;
+    border-left-color: white;
+    border-right-color: white;
+	border-width: 2px;
+    border-radius:32px;
+	color: #d3dae3;
+	padding: 4px;
+}
+QPushButton:pressed{
+	border-style: solid;
+	border-top-color:rgb(255, 0, 255);
+    border-bottom-color: rgb(255, 0, 255);
+    border-left-color: rgb(255, 0, 255);
+    border-right-color:rgb(255, 0, 255);
+	border-width: 2px;
+    border-radius:32px;
+	color: #d3dae3;
+	padding: 4px;
+}</string>
                          </property>
                          <property name="text">
-                          <string>P</string>
+                          <string/>
                          </property>
                         </widget>
                        </item>
@@ -807,7 +977,7 @@ border:none;
 }</string>
                          </property>
                          <property name="text">
-                          <string>Ip Number of Third Bulb</string>
+                          <string>Ip Number of Left Bottom Bulb</string>
                          </property>
                         </widget>
                        </item>
@@ -828,7 +998,7 @@ border:none;
                         </spacer>
                        </item>
                        <item>
-                        <widget class="QLineEdit" name="thirdEdit">
+                        <widget class="QComboBox" name="thirdIpCombo">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -837,31 +1007,100 @@ border:none;
                          </property>
                          <property name="minimumSize">
                           <size>
-                           <width>100</width>
+                           <width>130</width>
                            <height>0</height>
                           </size>
                          </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
                          <property name="styleSheet">
-                          <string notr="true">QLineEdit{
-	color:white;
-	border:1 solid;
+                          <string notr="true">QComboBox
+{
+    background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(84, 84, 84, 255),stop:1 rgba(59, 59, 59, 255));
+    border: 1px solid #000;
+    padding-left: 6px;
+    color: #ffffff;
+    height: 15px;
+
+}
+
+
+QComboBox::disabled
+{
+	background-color: #404040;
+	color: #656565;
+	border-color: #051a39;
+
+}
+
+
+QComboBox:on
+{
+    background-color: #b78620;
+	color: #000;
+
+}
+
+
+QComboBox QAbstractItemView
+{
+    background-color: #383838;
+    color: #ffffff;
+    border: 1px solid black;
+    selection-background-color: #b78620;
+    outline: 0;
+
 }</string>
                          </property>
-                         <property name="inputMask">
-                          <string>000.000.000.000;_</string>
+                         <property name="editable">
+                          <bool>true</bool>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLabel" name="thirdChkLabel">
-                         <property name="font">
-                          <font>
-                           <family>Wingdings 2</family>
-                           <pointsize>12</pointsize>
-                          </font>
+                        <widget class="QPushButton" name="t3Button">
+                         <property name="minimumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton:hover{
+	border-style: solid;
+	border-top-color:white;
+    border-bottom-color: white;
+    border-left-color: white;
+    border-right-color: white;
+	border-width: 2px;
+    border-radius:32px;
+	color: #d3dae3;
+	padding: 4px;
+}
+QPushButton:pressed{
+	border-style: solid;
+	border-top-color:rgb(255, 0, 255);
+    border-bottom-color: rgb(255, 0, 255);
+    border-left-color: rgb(255, 0, 255);
+    border-right-color:rgb(255, 0, 255);
+	border-width: 2px;
+    border-radius:32px;
+	color: #d3dae3;
+	padding: 4px;
+}</string>
                          </property>
                          <property name="text">
-                          <string>P</string>
+                          <string/>
                          </property>
                         </widget>
                        </item>
@@ -949,7 +1188,7 @@ border:none;
 }</string>
                          </property>
                          <property name="text">
-                          <string>Ip Number of Fourth Bulb</string>
+                          <string>Ip Number of Right Bottom Bulb</string>
                          </property>
                         </widget>
                        </item>
@@ -970,7 +1209,7 @@ border:none;
                         </spacer>
                        </item>
                        <item>
-                        <widget class="QLineEdit" name="fourthEdit">
+                        <widget class="QComboBox" name="fourthIpCombo">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -979,159 +1218,102 @@ border:none;
                          </property>
                          <property name="minimumSize">
                           <size>
-                           <width>100</width>
+                           <width>130</width>
                            <height>0</height>
                           </size>
                          </property>
                          <property name="styleSheet">
-                          <string notr="true">QLineEdit{
-	color:white;
-	border:1 solid;
+                          <string notr="true">QComboBox
+{
+    background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(84, 84, 84, 255),stop:1 rgba(59, 59, 59, 255));
+    border: 1px solid #000;
+    padding-left: 6px;
+    color: #ffffff;
+    height: 15px;
+
+}
+
+
+QComboBox::disabled
+{
+	background-color: #404040;
+	color: #656565;
+	border-color: #051a39;
+
+}
+
+
+QComboBox:on
+{
+    background-color: #b78620;
+	color: #000;
+
+}
+
+
+QComboBox QAbstractItemView
+{
+    background-color: #383838;
+    color: #ffffff;
+    border: 1px solid black;
+    selection-background-color: #b78620;
+    outline: 0;
+
 }</string>
                          </property>
-                         <property name="inputMask">
-                          <string>000.000.000.000;_</string>
+                         <property name="editable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="frame">
+                          <bool>true</bool>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLabel" name="fourthChkLabel">
-                         <property name="font">
-                          <font>
-                           <family>Wingdings 2</family>
-                           <pointsize>12</pointsize>
-                          </font>
+                        <widget class="QPushButton" name="t4Button">
+                         <property name="minimumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton:hover{
+	border-style: solid;
+	border-top-color:white;
+    border-bottom-color: white;
+    border-left-color: white;
+    border-right-color: white;
+	border-width: 2px;
+    border-radius:32px;
+	color: #d3dae3;
+	padding: 4px;
+}
+QPushButton:pressed{
+	border-style: solid;
+	border-top-color:rgb(255, 0, 255);
+    border-bottom-color: rgb(255, 0, 255);
+    border-left-color: rgb(255, 0, 255);
+    border-right-color:rgb(255, 0, 255);
+	border-width: 2px;
+    border-radius:32px;
+	color: #d3dae3;
+	padding: 4px;
+}</string>
                          </property>
                          <property name="text">
-                          <string>P</string>
+                          <string/>
                          </property>
                         </widget>
                        </item>
                        <item>
                         <spacer name="horizontalSpacer_17">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>50</width>
-                           <height>5</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_17">
-                    <item>
-                     <widget class="QWidget" name="widget_10" native="true">
-                      <property name="styleSheet">
-                       <string notr="true">QWidget
-{
-border:none;
-}</string>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_18">
-                       <property name="spacing">
-                        <number>0</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>0</number>
-                       </property>
-                       <item>
-                        <spacer name="horizontalSpacer_19">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeType">
-                          <enum>QSizePolicy::Fixed</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>20</width>
-                           <height>5</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label_8">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <family>Arial</family>
-                           <pointsize>9</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QLabel{
-	color:white;
-	background:transparent;
-	border-style: none;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>Video Delay</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <spacer name="horizontalSpacer_20">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeType">
-                          <enum>QSizePolicy::Fixed</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>85</width>
-                           <height>5</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                       <item>
-                        <widget class="QSpinBox" name="videodelaySpin">
-                         <property name="styleSheet">
-                          <string notr="true">QSpinBox{
-	color:white;
-	border:1 solid;
-}</string>
-                         </property>
-                         <property name="maximum">
-                          <number>999999999</number>
-                         </property>
-                         <property name="singleStep">
-                          <number>10</number>
-                         </property>
-                         <property name="value">
-                          <number>1000</number>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <spacer name="horizontalSpacer_21">
                          <property name="orientation">
                           <enum>Qt::Horizontal</enum>
                          </property>
@@ -1160,78 +1342,35 @@ border:none;
                  <property name="enabled">
                   <bool>true</bool>
                  </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="layoutDirection">
+                  <enum>Qt::RightToLeft</enum>
+                 </property>
                  <layout class="QFormLayout" name="formLayout">
+                  <property name="labelAlignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                  </property>
+                  <property name="formAlignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                  </property>
                   <property name="leftMargin">
                    <number>0</number>
                   </property>
                   <item row="0" column="0">
                    <widget class="QPushButton" name="discoverButton">
-                    <property name="minimumSize">
-                     <size>
-                      <width>120</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <family>Arial</family>
-                      <pointsize>9</pointsize>
-                      <weight>75</weight>
-                      <bold>true</bold>
-                     </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">QPushButton{
-	border-style: solid;
-	border-color: #050a0e;
-	border-width: 1px;
-	border-radius:32px;
-	color: #d3dae3;
-	padding:4px;
-	
-	background-color: transparent;
-}
-QPushButton::default{
-	border-style: solid;
-	border-color: #050a0e;
-	border-width: 1px;
-	border-radius: 32px;
-	color: #FFFFFF;
-	padding: 4px;
-	background-color: transparent;
-}
-QPushButton:hover{
-	border-style: solid;
-	border-top-color:white;
-    border-bottom-color: white;
-    border-left-color: white;
-    border-right-color: white;
-	border-width: 2px;
-    border-radius:32px;
-	color: #d3dae3;
-	padding: 4px;
-}
-QPushButton:pressed{
-	border-style: solid;
-	border-top-color:rgb(255, 0, 255);
-    border-bottom-color: rgb(255, 0, 255);
-    border-left-color: rgb(255, 0, 255);
-    border-right-color:rgb(255, 0, 255);
-	border-width: 2px;
-    border-radius:32px;
-	color: #d3dae3;
-	padding: 4px;
-}</string>
-                    </property>
-                    <property name="text">
-                     <string>Discover Bulbs</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
-                   <widget class="QPushButton" name="testLampButton">
                     <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                       <horstretch>0</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
@@ -1294,7 +1433,7 @@ QPushButton:pressed{
 }</string>
                     </property>
                     <property name="text">
-                     <string>Test Bulbs</string>
+                     <string>Discover Bulbs</string>
                     </property>
                    </widget>
                   </item>

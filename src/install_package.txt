@@ -1,0 +1,5 @@
+pip install numpy
+pip install opencv-python
+pip install PyQt5
+pip install yeelight
+pip install sklearn

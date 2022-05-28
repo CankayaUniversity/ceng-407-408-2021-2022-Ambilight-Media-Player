@@ -1,3 +1,4 @@
+#Lamba bağlantı ayarları geliştirildi.
 import sys
 import os
 from os.path import exists
@@ -63,16 +64,15 @@ class AL_Player(QtWidgets.QMainWindow):
            self.secondBulbIp=ipBulbs["secondIp"]
            self.thirdBulbIp=ipBulbs["thirdIp"]
            self.fourthBulbIp=ipBulbs["fourthIp"]
-           try: 
-               self.createBulb()
-           except:
+           self.createBulb()
+           #print(self.AMLStatus)
+           if not self.AMLStatus:
                popup= QMessageBox()
-               popup.setWindowTitle("Adjustment Issue")
-               popup.setText("Bağlantı hatası...")
-               popup.setIcon(QMessageBox.Warning)
-               res= popup.exec_()
+               popup.setWindowTitle("Connection Issues")
+               popup.setText("Unexpected error occurred in lamp connections.\nPlease check your connection settings.")
+               popup.setIcon(QMessageBox.Critical)
                self.AMLStatus=False
-               pass
+               res= popup.exec_()
         else:
             popup= QMessageBox()
             popup.setWindowTitle("Adjustment Issue")
@@ -172,53 +172,126 @@ class AL_Player(QtWidgets.QMainWindow):
     ##Menu Functions
     def createBulb(self):
         if self.bulbCount==0:
-               self.singleBulb = Bulb(self.firstBulbIp, effect="smooth")
-               self.singleBulb.turn_on()
-               #self.singleBulb.stop_music()
-               
-               self.singleBulb.start_music(55443)
+            if self.singleBulb is None:
+                try:
+                    self.singleBulb = Bulb(self.firstBulbIp, effect="smooth")
+                    self.singleBulb.turn_on()
+                    music=self.singleBulb.get_properties()
+                    if music['music_on']=='0':
+                        self.singleBulb.start_music(2023)
+                    else:
+                        self.singleBulb.stop_music()
+                        time.sleep(1)
+                        self.singleBulb.start_music(2023)
+                    self.singleBulb.set_rgb(255,255,255)
+                    self.AMLStatus=True
+                except:
+                    self.AMLStatus=False    
         elif self.bulbCount==1:
-               self.leftBulb = Bulb(self.firstBulbIp, effect="smooth")
-               self.rightBulb = Bulb(self.secondBulbIp, effect="smooth")
-               self.leftBulb.turn_on()
-               self.rightBulb.turn_on()
-               #self.leftBulb.stop_music()
-               #self.rightBulb.stop_music()
-               
-               self.leftBulb.start_music(55443)
-               self.rightBulb.start_music(55444)
+            if self.leftBulb is None:
+                try:
+                    self.leftBulb = Bulb(self.firstBulbIp, effect="smooth")
+                    self.leftBulb.turn_on()
+                    music=self.leftBulb.get_properties()
+                    if music['music_on']=='0':
+                        self.leftBulb.start_music(2023)
+                    else:
+                        self.leftBulb.stop_music()
+                        time.sleep(1)
+                        self.leftBulb.start_music(2023)
+                    self.leftBulb.set_rgb(255,255,255)
+                    self.AMLStatus=True
+                except:
+                    self.AMLStatus=False
+            if self.rightBulb is None:
+                try:
+                    self.rightBulb = Bulb(self.secondBulbIp, effect="smooth")
+                    self.rightBulb.turn_on()
+                    music=self.rightBulb.get_properties()
+                    if music['music_on']=='0':
+                        self.rightBulb.start_music(2023)
+                    else:
+                        self.rightBulb.stop_music()
+                        time.sleep(1)
+                        self.rightBulb.start_music(2023)
+                    self.rightBulb.set_rgb(255,255,255)
+                    self.AMLStatus=True
+                except:
+                    self.AMLStatus=False
         elif self.bulbCount==2:
-               self.leftTopBulb = Bulb(self.firstBulbIp, effect="smooth")
-               self.rightTopBulb = Bulb(self.secondBulbIp, effect="smooth")
-               self.leftBottomBulb = Bulb(self.thirdBulbIp, effect="smooth")
-               self.rightBottomBulb = Bulb(self.fourthBulbIp, effect="smooth")
-               self.leftTopBulb.turn_on()
-               self.rightTopBulb.turn_on()
-               self.leftBottomBulb.turn_on()
-               self.rightBottomBulb.turn_on()
-               #self.leftTopBulb.stop_music()
-               #self.rightTopBulb.stop_music() 
-               #self.leftBottomBulb.stop_music()
-               #self.rightBottomBulb.stop_music()
-               
-               self.leftTopBulb.start_music(55443)
-               self.rightTopBulb.start_music(55444)
-               self.leftBottomBulb.start_music(55445)
-               self.rightBottomBulb.start_music(55446)
-        self.AMLStatus=True
+            if self.leftTopBulb is None:
+                try:
+                    self.leftTopBulb = Bulb(self.firstBulbIp, effect="smooth")
+                    self.leftTopBulb.turn_on()
+                    music=self.leftTopBulb.get_properties()
+                    if music['music_on']=='0':
+                        self.leftTopBulb.start_music(2023)
+                    else:
+                        self.leftTopBulb.stop_music()
+                        time.sleep(1)
+                        self.leftTopBulb.start_music(2023)
+                    self.leftTopBulb.set_rgb(255,255,255)
+                    self.AMLStatus=True
+                except:
+                    self.AMLStatus=False
+            if self.rightTopBulb is None:
+                try:
+                    self.rightTopBulb = Bulb(self.secondBulbIp, effect="smooth")
+                    self.rightTopBulb.turn_on()
+                    music=self.rightTopBulb.get_properties()
+                    if music['music_on']=='0':
+                        self.rightTopBulb.start_music(2023)
+                    else:
+                        self.rightTopBulb.stop_music()
+                        time.sleep(1)
+                        self.rightTopBulb.start_music(2023)
+                    self.rightTopBulb.set_rgb(255,255,255)
+                    self.AMLStatus=True
+                except:
+                    self.AMLStatus=False
+            if self.leftBottomBulb is None:
+                try:
+                    self.leftBottomBulb = Bulb(self.thirdBulbIp, effect="smooth")
+                    self.leftBottomBulb.turn_on()
+                    music=self.leftBottomBulb.get_properties()
+                    if music['music_on']=='0':
+                        self.leftBottomBulb.start_music(2023)
+                    else:
+                        self.leftBottomBulb.stop_music()
+                        time.sleep(1)
+                        self.leftBottomBulb.start_music(2023)
+                    self.leftBottomBulb.set_rgb(255,255,255)
+                    self.AMLStatus=True
+                except:
+                    self.AMLStatus=False
+            if self.rightBottomBulb is None:
+                try:
+                    self.rightBottomBulb = Bulb(self.fourthBulbIp, effect="smooth")
+                    self.rightBottomBulb.turn_on()
+                    music=self.rightBottomBulb.get_properties()
+                    if music['music_on']=='0':
+                        self.rightBottomBulb.start_music(2023)
+                    else:
+                        self.rightBottomBulb.stop_music()
+                        time.sleep(1)
+                        self.rightBottomBulb.start_music(2023)
+                    self.rightBottomBulb.set_rgb(255,255,255)
+                    self.AMLStatus=True
+                except:
+                    self.AMLStatus=False
+        
     def closeBulb(self):
-        if self.AMLStatus:
-            if self.bulbCount==0:
-                self.singleBulb.turn_off()
-            elif self.bulbCount==1:
-                self.leftBulb.turn_off() 
-                self.rightBulb.turn_off()
-            elif self.bulbCount==2:
-                self.leftTopBulb.turn_off() 
-                self.rightTopBulb.turn_off()
-                self.leftBottomBulb.turn_off()
-                self.rightBottomBulb.turn_off()
-            self.AMLStatus=False
+        if self.bulbCount==0:
+               self.singleBulb.turn_off()
+        elif self.bulbCount==1:
+               self.leftBulb.turn_off() 
+               self.rightBulb.turn_off()
+        elif self.bulbCount==2:
+               self.leftTopBulb.turn_off() 
+               self.rightTopBulb.turn_off()
+               self.leftBottomBulb.turn_off()
+               self.rightBottomBulb.turn_off()
+               
     def openBulb(self):
         if self.bulbCount==0:
                self.singleBulb.turn_on()
@@ -230,7 +303,7 @@ class AL_Player(QtWidgets.QMainWindow):
                self.rightTopBulb.turn_on()
                self.leftBottomBulb.turn_on()
                self.rightBottomBulb.turn_on()
-        self.AMLStatus=True
+
     def createMenu(self):
         self.myMenu = QtWidgets.QMenu(self)
         openAction=QtWidgets.QAction('Open Video File', self)
@@ -278,7 +351,8 @@ class AL_Player(QtWidgets.QMainWindow):
             self.maxButton.setToolTip("Normal")
 
     def closeButtonClicked(self):
-        self.closeBulb()
+        if self.AMLStatus == True:
+            self.closeBulb()
         sys.exit()
     ##End Min_Max_Close Functions
 
@@ -432,7 +506,7 @@ class AL_Player(QtWidgets.QMainWindow):
                     
     def positionChanged(self, position):
         self.positionSlider.setValue(position)
-        if self.AMLStatus:
+        if self.AMLStatus == True:
             image = self.grabVideoSurface.getCurrentFrame
             if not image.isNull():
                 img_list=self.divideImage(self.convertQImageToMat(image))
@@ -495,9 +569,7 @@ class AL_Player(QtWidgets.QMainWindow):
     def recListDblClick(self,item):
         if self.mediaPlayer !=None:
             self.mediaPlayer.stop()
-            
             self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(item.text())))
-            
             self.playingLabel.setText("Playing: "+item.text())
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
@@ -506,16 +578,17 @@ class AL_Player(QtWidgets.QMainWindow):
         if status in [QMediaPlayer.EndOfMedia,QMediaPlayer.StoppedState]:
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
-            self.closeBulb()
             self.mediaPlayer.setPosition(0)
-            
+            if self.AMLStatus == True:
+                self.closeBulb()
         if status in [QMediaPlayer.PausedState]:
             self.playbutton.setText("4")
             self.playbutton.setChecked(False)
         if status in [QMediaPlayer.PlayingState]:
             self.playbutton.setText(";")
             self.playbutton.setChecked(True)
-            self.openBulb()
+            if self.AMLStatus == True:
+                self.openBulb()
             
     def divideImage(self,img):
         image_list=list()
@@ -579,7 +652,7 @@ class AL_Player(QtWidgets.QMainWindow):
             singleG=int(singleColors[0,1])
             singleB=int(singleColors[0,2])
             try:
-                if singleR<10 and singleG<10 and singleB<10:
+                if singleR<20 and singleG<20 and singleB<20:
                     self.singleBulb.turn_off()
                 else:
                     self.singleBulb.turn_on()
@@ -605,13 +678,13 @@ class AL_Player(QtWidgets.QMainWindow):
             rightB=int(doubleColors[0,2])
 
             try:
-                if leftR<10 and leftG<10 and leftB<10:
+                if leftR<20 and leftG<20 and leftB<20:
                     self.leftBulb.turn_off()
                 else:
                     self.leftBulb.turn_on()
                     self.leftBulb.set_rgb(leftR,leftG,leftB)
                     
-                if rightR<10 and rightG<10 and rightB<10:
+                if rightR<20 and rightG<20 and rightB<20:
                     self.rightBulb.turn_off()
                 else:
                     self.rightBulb.turn_on()
@@ -653,25 +726,25 @@ class AL_Player(QtWidgets.QMainWindow):
             rightBotB=int(fourColors[0,2])
 
             try:
-                if leftTopR<10 and leftTopG<10 and leftTopB<10:
+                if leftTopR<20 and leftTopG<20 and leftTopB<20:
                     self.leftTopBulb.turn_off()
                 else:
                     self.leftTopBulb.turn_on()
                     self.leftTopBulb.set_rgb(leftTopR,leftTopG,leftTopB)
                     
-                if rightTopR<10 and rightTopG<10 and rightTopB<10:
+                if rightTopR<20 and rightTopG<20 and rightTopB<20:
                     self.rightTopBulb.turn_off()
                 else:
                     self.rightTopBulb.turn_on()
                     self.rightTopBulb.set_rgb(rightTopR,rightTopG,rightTopB)
                     
-                if leftBotR<10 and leftBotG<10 and leftBotB<10:
+                if leftBotR<20 and leftBotG<20 and leftBotB<20:
                     self.leftBottomBulb.turn_off()
                 else:
                     self.leftBottomBulb.turn_on()
                     self.leftBottomBulb.set_rgb(leftBotR,leftBotG,leftBotB)
 
-                if rightBotR<10 and rightBotG<10 and rightBotB<10:
+                if rightBotR<20 and rightBotG<20 and rightBotB<20:
                     self.rightBottomBulb.turn_off()
                 else:
                     self.rightBottomBulb.turn_on()

@@ -1,4 +1,5 @@
-#Lamba bağlantı ayarları geliştirildi.
+#Dominat Color Modülü değiştirildi, cluster sayısı artıtırıldı,
+#koyu renk tonlarında lamba davranışları geliştirildi.
 import sys
 import os
 from os.path import exists
@@ -174,8 +175,8 @@ class AL_Player(QtWidgets.QMainWindow):
         if self.bulbCount==0:
             if self.singleBulb is None:
                 try:
-                    self.singleBulb = Bulb(self.firstBulbIp, effect="smooth")
-                    self.singleBulb.turn_on()
+                    self.singleBulb = Bulb(self.firstBulbIp, effect="smooth", auto_on=True)
+                    #self.singleBulb.turn_on()
                     music=self.singleBulb.get_properties()
                     if music['music_on']=='0':
                         self.singleBulb.start_music(2023)
@@ -183,46 +184,46 @@ class AL_Player(QtWidgets.QMainWindow):
                         self.singleBulb.stop_music()
                         time.sleep(1)
                         self.singleBulb.start_music(2023)
-                    self.singleBulb.set_rgb(255,255,255)
+                    self.singleBulb.set_color_temp(6500)
                     self.AMLStatus=True
                 except:
                     self.AMLStatus=False    
         elif self.bulbCount==1:
             if self.leftBulb is None:
                 try:
-                    self.leftBulb = Bulb(self.firstBulbIp, effect="smooth")
-                    self.leftBulb.turn_on()
+                    self.leftBulb = Bulb(self.firstBulbIp, effect="smooth", auto_on=True)
+                    #self.leftBulb.turn_on()
                     music=self.leftBulb.get_properties()
                     if music['music_on']=='0':
-                        self.leftBulb.start_music(2023)
+                        self.leftBulb.start_music(65443)
                     else:
                         self.leftBulb.stop_music()
                         time.sleep(1)
-                        self.leftBulb.start_music(2023)
-                    self.leftBulb.set_rgb(255,255,255)
+                        self.leftBulb.start_music(65443)
+                    self.leftBulb.set_color_temp(6500)
                     self.AMLStatus=True
                 except:
                     self.AMLStatus=False
             if self.rightBulb is None:
                 try:
-                    self.rightBulb = Bulb(self.secondBulbIp, effect="smooth")
-                    self.rightBulb.turn_on()
+                    self.rightBulb = Bulb(self.secondBulbIp, effect="smooth", auto_on=True)
+                    #self.rightBulb.turn_on()
                     music=self.rightBulb.get_properties()
                     if music['music_on']=='0':
-                        self.rightBulb.start_music(2023)
+                        self.rightBulb.start_music(65443)
                     else:
                         self.rightBulb.stop_music()
                         time.sleep(1)
-                        self.rightBulb.start_music(2023)
-                    self.rightBulb.set_rgb(255,255,255)
+                        self.rightBulb.start_music(65443)
+                    self.rightBulb.set_color_temp(6500)
                     self.AMLStatus=True
                 except:
                     self.AMLStatus=False
         elif self.bulbCount==2:
             if self.leftTopBulb is None:
                 try:
-                    self.leftTopBulb = Bulb(self.firstBulbIp, effect="smooth")
-                    self.leftTopBulb.turn_on()
+                    self.leftTopBulb = Bulb(self.firstBulbIp, effect="smooth", auto_on=True)
+                    #self.leftTopBulb.turn_on()
                     music=self.leftTopBulb.get_properties()
                     if music['music_on']=='0':
                         self.leftTopBulb.start_music(2023)
@@ -230,14 +231,14 @@ class AL_Player(QtWidgets.QMainWindow):
                         self.leftTopBulb.stop_music()
                         time.sleep(1)
                         self.leftTopBulb.start_music(2023)
-                    self.leftTopBulb.set_rgb(255,255,255)
+                    self.leftTopBulb.set_color_temp(6500)
                     self.AMLStatus=True
                 except:
                     self.AMLStatus=False
             if self.rightTopBulb is None:
                 try:
-                    self.rightTopBulb = Bulb(self.secondBulbIp, effect="smooth")
-                    self.rightTopBulb.turn_on()
+                    self.rightTopBulb = Bulb(self.secondBulbIp, effect="smooth", auto_on=True)
+                    #self.rightTopBulb.turn_on()
                     music=self.rightTopBulb.get_properties()
                     if music['music_on']=='0':
                         self.rightTopBulb.start_music(2023)
@@ -245,14 +246,14 @@ class AL_Player(QtWidgets.QMainWindow):
                         self.rightTopBulb.stop_music()
                         time.sleep(1)
                         self.rightTopBulb.start_music(2023)
-                    self.rightTopBulb.set_rgb(255,255,255)
+                    self.rightTopBulb.set_color_temp(6500)
                     self.AMLStatus=True
                 except:
                     self.AMLStatus=False
             if self.leftBottomBulb is None:
                 try:
-                    self.leftBottomBulb = Bulb(self.thirdBulbIp, effect="smooth")
-                    self.leftBottomBulb.turn_on()
+                    self.leftBottomBulb = Bulb(self.thirdBulbIp, effect="smooth", auto_on=True)
+                    #self.leftBottomBulb.turn_on()
                     music=self.leftBottomBulb.get_properties()
                     if music['music_on']=='0':
                         self.leftBottomBulb.start_music(2023)
@@ -260,14 +261,14 @@ class AL_Player(QtWidgets.QMainWindow):
                         self.leftBottomBulb.stop_music()
                         time.sleep(1)
                         self.leftBottomBulb.start_music(2023)
-                    self.leftBottomBulb.set_rgb(255,255,255)
+                    self.leftBottomBulb.set_color_temp(6500)
                     self.AMLStatus=True
                 except:
                     self.AMLStatus=False
             if self.rightBottomBulb is None:
                 try:
-                    self.rightBottomBulb = Bulb(self.fourthBulbIp, effect="smooth")
-                    self.rightBottomBulb.turn_on()
+                    self.rightBottomBulb = Bulb(self.fourthBulbIp, effect="smooth", auto_on=True)
+                    #self.rightBottomBulb.turn_on()
                     music=self.rightBottomBulb.get_properties()
                     if music['music_on']=='0':
                         self.rightBottomBulb.start_music(2023)
@@ -275,7 +276,7 @@ class AL_Player(QtWidgets.QMainWindow):
                         self.rightBottomBulb.stop_music()
                         time.sleep(1)
                         self.rightBottomBulb.start_music(2023)
-                    self.rightBottomBulb.set_rgb(255,255,255)
+                    self.rightBottomBulb.set_color_temp(6500)
                     self.AMLStatus=True
                 except:
                     self.AMLStatus=False
@@ -357,6 +358,9 @@ class AL_Player(QtWidgets.QMainWindow):
     ##End Min_Max_Close Functions
 
     ##Main Form Event Functions
+    #In this part of the code, examples
+    #from https://www.fatalerrors.org/a/0N921Q.html were used.
+    
     def moveCenter(self):
         #Positions the window in the center of the screen
         fg = self.frameGeometry()
@@ -645,50 +649,50 @@ class AL_Player(QtWidgets.QMainWindow):
     def sendColor(self,list):
         if self.bulbCount==0:
             img = list[0]
-            clusters = 1
+            clusters = 5
             dc = FindDominantColors(img, clusters)
             singleColors = dc.dominantColors()
-            singleR=int(singleColors[0,0])
-            singleG=int(singleColors[0,1])
-            singleB=int(singleColors[0,2])
             try:
-                if singleR<20 and singleG<20 and singleB<20:
-                    self.singleBulb.turn_off()
+                if dc.MAXINDEX > -1:
+                    self.singleBulb.set_rgb(int(singleColors[dc.MAXINDEX][0]), int(singleColors[dc.MAXINDEX][1]), int(singleColors[dc.MAXINDEX][2]))
+                    self.singleBulb.set_brightness(dc.BRIGHTNESS)
                 else:
-                    self.singleBulb.turn_on()
-                    self.singleBulb.set_rgb(singleR,singleG,singleB)
+                    self.singleBulb.turn_off()
             except:
                 pass
             
         elif self.bulbCount==1:
             leftimg = list[0]
             rightimg = list[1]
-            clusters = 1
-            dc = FindDominantColors(leftimg, clusters) 
+            clusters = 5
+            dc = FindDominantColors(leftimg, clusters)
             doubleColors = dc.dominantColors()
-            
-            leftR=int(doubleColors[0,0])
-            leftG=int(doubleColors[0,1])
-            leftB=int(doubleColors[0,2])
-
+            leftBrightness=dc.BRIGHTNESS
+            leftMaxindex=dc.MAXINDEX
+            leftR=int(doubleColors[leftMaxindex][0])
+            leftG=int(doubleColors[leftMaxindex][1])
+            leftB=int(doubleColors[leftMaxindex][2])
             dc = FindDominantColors(rightimg, clusters) 
             doubleColors = dc.dominantColors()
-            rightR=int(doubleColors[0,0])
-            rightG=int(doubleColors[0,1])
-            rightB=int(doubleColors[0,2])
-
+            rightBrightness=dc.BRIGHTNESS
+            rightMaxindex=dc.MAXINDEX
+            rightR=int(doubleColors[rightMaxindex][0])
+            rightG=int(doubleColors[rightMaxindex][1])
+            rightB=int(doubleColors[rightMaxindex][2])
             try:
-                if leftR<20 and leftG<20 and leftB<20:
-                    self.leftBulb.turn_off()
-                else:
+                if leftMaxindex > -1:
                     self.leftBulb.turn_on()
                     self.leftBulb.set_rgb(leftR,leftG,leftB)
-                    
-                if rightR<20 and rightG<20 and rightB<20:
-                    self.rightBulb.turn_off()
+                    self.leftBulb.set_brightness(leftBrightness)
                 else:
+                    self.leftBulb.turn_off()
+
+                if rightMaxindex > -1:
                     self.rightBulb.turn_on()
                     self.rightBulb.set_rgb(rightR,rightG,rightB)
+                    self.rightBulb.set_brightness(rightBrightness)
+                else:
+                    self.rightBulb.turn_off()
             except:
                 pass
         
@@ -698,64 +702,76 @@ class AL_Player(QtWidgets.QMainWindow):
             rightTopimg = list[3]
             leftBotimg = list[0]
             rightBotimg = list[2]
-            clusters = 1
+            clusters = 5
             
-            dc = FindDominantColors(leftTopimg, clusters) 
+            dc = FindDominantColors(leftTopimg, clusters)
             fourColors = dc.dominantColors()
+            leftTopBrightness=dc.BRIGHTNESS
+            leftTopMaxindex=dc.MAXINDEX
+            leftTopR=int(fourColors[leftTopMaxindex][0])
+            leftTopG=int(fourColors[leftTopMaxindex][1])
+            leftTopB=int(fourColors[leftTopMaxindex][2])
             
-            leftTopR=int(fourColors[0,0])
-            leftTopG=int(fourColors[0,1])
-            leftTopB=int(fourColors[0,2])
-
             dc = FindDominantColors(rightTopimg, clusters) 
             fourColors = dc.dominantColors()
-            rightTopR=int(fourColors[0,0])
-            rightTopG=int(fourColors[0,1])
-            rightTopB=int(fourColors[0,2])
+            rightTopBrightness=dc.BRIGHTNESS
+            rightTopMaxindex=dc.MAXINDEX
+            rightTopR=int(fourColors[rightTopMaxindex][0])
+            rightTopG=int(fourColors[rightTopMaxindex][1])
+            rightTopB=int(fourColors[rightTopMaxindex][2])
 
-            dc = FindDominantColors(leftBotimg, clusters) 
+            dc = FindDominantColors(leftBotimg, clusters)
             fourColors = dc.dominantColors()
-            leftBotR=int(fourColors[0,0])
-            leftBotG=int(fourColors[0,1])
-            leftBotB=int(fourColors[0,2])
-
+            leftBotBrightness=dc.BRIGHTNESS
+            leftBotMaxindex=dc.MAXINDEX
+            leftBotR=int(fourColors[leftBotMaxindex][0])
+            leftBotG=int(fourColors[leftBotMaxindex][1])
+            leftBotB=int(fourColors[leftBotMaxindex][2])
+            
             dc = FindDominantColors(rightBotimg, clusters) 
             fourColors = dc.dominantColors()
-            rightBotR=int(fourColors[0,0])
-            rightBotG=int(fourColors[0,1])
-            rightBotB=int(fourColors[0,2])
+            rightBotBrightness=dc.BRIGHTNESS
+            rightBotMaxindex=dc.MAXINDEX
+            rightBotR=int(fourColors[rightBotMaxindex][0])
+            rightBotG=int(fourColors[rightBotMaxindex][1])
+            rightBotB=int(fourColors[rightBotMaxindex][2])
 
             try:
-                if leftTopR<20 and leftTopG<20 and leftTopB<20:
-                    self.leftTopBulb.turn_off()
-                else:
+                if leftTopMaxindex > -1:
                     self.leftTopBulb.turn_on()
                     self.leftTopBulb.set_rgb(leftTopR,leftTopG,leftTopB)
-                    
-                if rightTopR<20 and rightTopG<20 and rightTopB<20:
-                    self.rightTopBulb.turn_off()
+                    self.leftTopBulb.set_brightness(leftTopBrightness)
                 else:
+                    self.leftTopBulb.turn_off()
+
+                if rightTopMaxindex > -1:
                     self.rightTopBulb.turn_on()
                     self.rightTopBulb.set_rgb(rightTopR,rightTopG,rightTopB)
-                    
-                if leftBotR<20 and leftBotG<20 and leftBotB<20:
-                    self.leftBottomBulb.turn_off()
+                    self.rightTopBulb.set_brightness(rightTopBrightness)
                 else:
+                    self.rightTopBulb.turn_off()
+
+                if leftBotMaxindex > -1:
                     self.leftBottomBulb.turn_on()
                     self.leftBottomBulb.set_rgb(leftBotR,leftBotG,leftBotB)
-
-                if rightBotR<20 and rightBotG<20 and rightBotB<20:
-                    self.rightBottomBulb.turn_off()
+                    self.leftBottomBulb.set_brightness(leftBotBrightness)
                 else:
+                    self.leftBottomBulb.turn_off()
+
+                if rightBotMaxindex > -1:
                     self.rightBottomBulb.turn_on()
                     self.rightBottomBulb.set_rgb(rightBotR,rightBotG,rightBotB)
+                    self.rightBottomBulb.set_brightness(rightBotBrightness)
+                else:
+                    self.rightBottomBulb.turn_off()
             except:
                 pass
-        
+            
     ##End Media Player Functions
 
 if __name__ == '__main__':
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)    
     app = QtWidgets.QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon('./Settings/images/logo.gif'))
     mainWindow = AL_Player()
     sys.exit(app.exec_())

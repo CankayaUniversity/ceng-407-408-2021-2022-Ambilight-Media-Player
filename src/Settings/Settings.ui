@@ -576,7 +576,7 @@ border:none;
                          </property>
                          <property name="sizeHint" stdset="0">
                           <size>
-                           <width>45</width>
+                           <width>29</width>
                            <height>5</height>
                           </size>
                          </property>
@@ -786,7 +786,7 @@ border:none;
                          </property>
                          <property name="sizeHint" stdset="0">
                           <size>
-                           <width>37</width>
+                           <width>22</width>
                            <height>5</height>
                           </size>
                          </property>
@@ -991,7 +991,7 @@ border:none;
                          </property>
                          <property name="sizeHint" stdset="0">
                           <size>
-                           <width>19</width>
+                           <width>8</width>
                            <height>1</height>
                           </size>
                          </property>
@@ -1202,7 +1202,7 @@ border:none;
                          </property>
                          <property name="sizeHint" stdset="0">
                           <size>
-                           <width>12</width>
+                           <width>1</width>
                            <height>5</height>
                           </size>
                          </property>

@@ -846,7 +846,13 @@ QPushButton:pressed{
 }</string>
                </property>
                <property name="text">
-                <string></string>
+                <string/>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -1183,8 +1189,7 @@ QSlider::sub-page:horizontal {
 	border-radius:15px;
 	color: #d3dae3;
 	padding: 2px;
-	
-	background-color: transparent;
+	background-color: rgb(227, 227, 227);
 }
 QPushButton::default{
 	border-style: solid;
@@ -1193,14 +1198,11 @@ QPushButton::default{
 	border-radius: 15px;
 	color: #FFFFFF;
 	padding: 2px;
-	background-color: transparent;
+	background-color: rgb(227, 227, 227);
 }
 QPushButton:hover{
 	border-style: solid;
-	border-top-color:white;
-    border-bottom-color: white;
-    border-left-color: white;
-    border-right-color: white;
+	border-color:white;
 	border-width: 2px;
     border-radius:15px;
 	color: #d3dae3;
@@ -1208,10 +1210,7 @@ QPushButton:hover{
 }
 QPushButton:pressed{
 	border-style: solid;
-	border-top-color:rgb(255, 0, 255);
-    border-bottom-color: rgb(255, 0, 255);
-    border-left-color: rgb(255, 0, 255);
-    border-right-color:rgb(255, 0, 255);
+	border-color:#d24a43;
 	border-width: 2px;
     border-radius:15px;
 	color: #d3dae3;
@@ -1219,7 +1218,13 @@ QPushButton:pressed{
 }</string>
                           </property>
                           <property name="text">
-                           <string></string>
+                           <string/>
+                          </property>
+                          <property name="iconSize">
+                           <size>
+                            <width>24</width>
+                            <height>24</height>
+                           </size>
                           </property>
                           <property name="checkable">
                            <bool>false</bool>
@@ -1273,8 +1278,7 @@ QPushButton:pressed{
 	border-radius:15px;
 	color: #d3dae3;
 	padding: 2px;
-	
-	background-color: transparent;
+	background-color: rgb(227, 227, 227);
 }
 QPushButton::default{
 	border-style: solid;
@@ -1283,14 +1287,11 @@ QPushButton::default{
 	border-radius: 15px;
 	color: #FFFFFF;
 	padding: 2px;
-	background-color: transparent;
+	background-color: rgb(227, 227, 227);
 }
 QPushButton:hover{
 	border-style: solid;
-	border-top-color:white;
-    border-bottom-color: white;
-    border-left-color: white;
-    border-right-color: white;
+	border-color:white;
 	border-width: 2px;
     border-radius:15px;
 	color: #d3dae3;
@@ -1298,10 +1299,7 @@ QPushButton:hover{
 }
 QPushButton:pressed{
 	border-style: solid;
-	border-top-color:rgb(255, 0, 255);
-    border-bottom-color: rgb(255, 0, 255);
-    border-left-color: rgb(255, 0, 255);
-    border-right-color:rgb(255, 0, 255);
+	border-color:#d24a43;
 	border-width: 2px;
     border-radius:15px;
 	color: #d3dae3;
@@ -1309,7 +1307,13 @@ QPushButton:pressed{
 }</string>
                           </property>
                           <property name="text">
-                           <string></string>
+                           <string/>
+                          </property>
+                          <property name="iconSize">
+                           <size>
+                            <width>24</width>
+                            <height>24</height>
+                           </size>
                           </property>
                          </widget>
                         </item>
@@ -1359,28 +1363,25 @@ QPushButton:pressed{
                            <string notr="true">QPushButton{
 	border-style: solid;
 	border-color: #050a0e;
-	border-width: 1px;
+	border-width: 2px;
 	border-radius:32px;
 	color: #d3dae3;
 	padding: 2px;
+	background-color: rgb(227, 227, 227);
 	
-	background-color: transparent;
 }
 QPushButton::default{
 	border-style: solid;
 	border-color: #050a0e;
-	border-width: 1px;
+	border-width: 2px;
 	border-radius: 32px;
 	color: #FFFFFF;
 	padding: 2px;
-	background-color: transparent;
+	background-color: rgb(227, 227, 227);
 }
 QPushButton:hover{
 	border-style: solid;
-	border-top-color:white;
-    border-bottom-color: white;
-    border-left-color: white;
-    border-right-color: white;
+	border-color:white;
 	border-width: 2px;
     border-radius:32px;
 	color: #d3dae3;
@@ -1388,10 +1389,7 @@ QPushButton:hover{
 }
 QPushButton:pressed{
 	border-style: solid;
-	border-top-color:rgb(255, 0, 255);
-    border-bottom-color: rgb(255, 0, 255);
-    border-left-color: rgb(255, 0, 255);
-    border-right-color:rgb(255, 0, 255);
+	border-color:#d24a43;
 	border-width: 2px;
     border-radius:32px;
 	color: #d3dae3;
@@ -1399,7 +1397,13 @@ QPushButton:pressed{
 }</string>
                           </property>
                           <property name="text">
-                           <string></string>
+                           <string/>
+                          </property>
+                          <property name="iconSize">
+                           <size>
+                            <width>128</width>
+                            <height>128</height>
+                           </size>
                           </property>
                           <property name="checkable">
                            <bool>true</bool>
@@ -1456,8 +1460,7 @@ QPushButton:pressed{
 	border-radius:15px;
 	color: #d3dae3;
 	padding: 2px;
-	
-	background-color: transparent;
+	background-color: rgb(227, 227, 227);
 }
 QPushButton::default{
 	border-style: solid;
@@ -1466,14 +1469,11 @@ QPushButton::default{
 	border-radius: 15px;
 	color: #FFFFFF;
 	padding: 2px;
-	background-color: transparent;
+	background-color: rgb(227, 227, 227);
 }
 QPushButton:hover{
 	border-style: solid;
-	border-top-color:white;
-    border-bottom-color: white;
-    border-left-color: white;
-    border-right-color: white;
+	border-color:white;
 	border-width: 2px;
     border-radius:15px;
 	color: #d3dae3;
@@ -1481,10 +1481,7 @@ QPushButton:hover{
 }
 QPushButton:pressed{
 	border-style: solid;
-	border-top-color:rgb(255, 0, 255);
-    border-bottom-color: rgb(255, 0, 255);
-    border-left-color: rgb(255, 0, 255);
-    border-right-color:rgb(255, 0, 255);
+	border-color:#d24a43;
 	border-width: 2px;
     border-radius:15px;
 	color: #d3dae3;
@@ -1492,7 +1489,13 @@ QPushButton:pressed{
 }</string>
                           </property>
                           <property name="text">
-                           <string></string>
+                           <string/>
+                          </property>
+                          <property name="iconSize">
+                           <size>
+                            <width>24</width>
+                            <height>24</height>
+                           </size>
                           </property>
                          </widget>
                         </item>
@@ -1543,8 +1546,7 @@ QPushButton:pressed{
 	border-radius:15px;
 	color: #d3dae3;
 	padding: 2px;
-	
-	background-color: transparent;
+	background-color: rgb(227, 227, 227);
 }
 QPushButton::default{
 	border-style: solid;
@@ -1553,14 +1555,11 @@ QPushButton::default{
 	border-radius: 15px;
 	color: #FFFFFF;
 	padding: 2px;
-	background-color: transparent;
+	background-color: rgb(227, 227, 227);
 }
 QPushButton:hover{
 	border-style: solid;
-	border-top-color:white;
-    border-bottom-color: white;
-    border-left-color: white;
-    border-right-color: white;
+	border-color:white;
 	border-width: 2px;
     border-radius:15px;
 	color: #d3dae3;
@@ -1568,10 +1567,7 @@ QPushButton:hover{
 }
 QPushButton:pressed{
 	border-style: solid;
-	border-top-color:rgb(255, 0, 255);
-    border-bottom-color: rgb(255, 0, 255);
-    border-left-color: rgb(255, 0, 255);
-    border-right-color:rgb(255, 0, 255);
+	border-color:#d24a43;
 	border-width: 2px;
     border-radius:15px;
 	color: #d3dae3;
@@ -1579,7 +1575,13 @@ QPushButton:pressed{
 }</string>
                           </property>
                           <property name="text">
-                           <string></string>
+                           <string/>
+                          </property>
+                          <property name="iconSize">
+                           <size>
+                            <width>16</width>
+                            <height>16</height>
+                           </size>
                           </property>
                          </widget>
                         </item>

@@ -1,8 +1,11 @@
-#Dominat Color Modülü değiştirildi, cluster sayısı artıtırıldı,
-#koyu renk tonlarında lamba davranışları geliştirildi.
+#Frame yakalama ve renk gönderme işlemleri için Thread kullanıldı, performans iyileştirmesi yapıldı.
+#UI'lerde yer alan hatalar giderildi.
+#Butonlarda kullanılan simgeler Qt içine gömülü simgelerle değiştirildi
 import sys
 import os
 from os.path import exists
+import threading
+
 from configparser import ConfigParser
 import time
 import numpy as np
@@ -36,6 +39,8 @@ class AL_Player(QtWidgets.QMainWindow):
         self.mainWindow = self.findChild(QtWidgets.QMainWindow, 'MainForm')
         self.setStyleSheet('background-color: black;')
         self.mediaPlayer =None
+        self.status_threads = False
+        
         ##Read Settings and Initilaze Bulb
         self.firstBulbIp=None
         self.secondBulbIp=None
@@ -121,16 +126,20 @@ class AL_Player(QtWidgets.QMainWindow):
 
         
         self.menuButton = self.findChild(QtWidgets.QPushButton, 'menuButton')
+        self.menuButton.setIcon(self.style().standardIcon(QStyle.SP_FileDialogListView))
         self.menuButton.clicked.connect(self.showMenu)
         
         
         self.playbutton = self.findChild(QtWidgets.QPushButton, 'playpauseButton')
+        self.playbutton.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
         self.playbutton.clicked.connect(self.playClick)
 
         self.fwdButton = self.findChild(QtWidgets.QPushButton, 'fwdButton')
+        self.fwdButton.setIcon(self.style().standardIcon(QStyle.SP_MediaSeekBackward))
         self.fwdButton.clicked.connect(self.setFwd)
 
         self.bwdButton = self.findChild(QtWidgets.QPushButton, 'bwdButton')
+        self.bwdButton.setIcon(self.style().standardIcon(QStyle.SP_MediaSeekForward))
         self.bwdButton.clicked.connect(self.setBwd)
 
         self.nextButton = self.findChild(QtWidgets.QPushButton, 'nextButton')
@@ -140,10 +149,12 @@ class AL_Player(QtWidgets.QMainWindow):
         self.prevButton.clicked.connect(self.setPrev)
 
         self.fullscrbutton = self.findChild(QtWidgets.QPushButton, 'fullScrButton')
+        self.fullscrbutton.setIcon(self.style().standardIcon(QStyle.SP_TitleBarMaxButton))
         self.fullscrbutton.clicked.connect(self.fullScreen)
         
         
         self.muteButton = self.findChild(QtWidgets.QPushButton, 'muteButton')
+        self.muteButton.setIcon(self.style().standardIcon(QStyle.SP_MediaVolume))
         self.muteButton.clicked.connect(self.mutePlayer)
 
         self.playingLabel=self.findChild(QtWidgets.QLabel, 'playingLabel')
@@ -459,14 +470,13 @@ class AL_Player(QtWidgets.QMainWindow):
             self.playingLabel.setText("Playing: "+self.fileName)
             QListWidgetItem(self.fileName,self.reclistWidget)
             self.reclistWidget.setCurrentRow(self.reclistWidget.count()-1)
-            self.playbutton.setText("4")
+            self.playbutton.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
             self.playbutton.setChecked(False)
 
     def openSettings(self):
         if self.mediaPlayer!=None:
             self.mediaPlayer.pause()
-            
-            self.playbutton.setText("4")
+            self.playbutton.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
             self.playbutton.setChecked(False)
         self.settingsWindow = ALP_Settings(self)
         self.settingsWindow.show()
@@ -474,17 +484,29 @@ class AL_Player(QtWidgets.QMainWindow):
     def aboutUs(self):
         if self.mediaPlayer!=None:
             self.mediaPlayer.pause()
-            
-            self.playbutton.setText("4")
+            self.playbutton.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
             self.playbutton.setChecked(False)
         
         self.aUsWindow = ALP_AboutUs(self)
         self.aUsWindow.show()
         
+    def changeColorThared(self, status):
+        while True:
+            if self.AMLStatus == True:
+                image = self.grabVideoSurface.getCurrentFrame
+                if not image.isNull():
+                    img_list=self.divideImage(self.convertQImageToMat(image))
+                    self.sendColor(img_list)
+            if status():
+                break
+                
     def playClick(self):
         if self.mediaPlayer!=None:
             if self.playbutton.isChecked():
                 self.mediaPlayer.play()
+                self.status_threads = False
+                self.threads1 = threading.Thread(target=self.changeColorThared, daemon=True, args =(lambda : self.status_threads, ))
+                self.threads1.start()
             else:
                 self.mediaPlayer.pause()
        
@@ -492,9 +514,9 @@ class AL_Player(QtWidgets.QMainWindow):
         if self.mediaPlayer!=None:
             self.mediaPlayer.setMuted(not self.mediaPlayer.isMuted())
             if self.mediaPlayer.isMuted():
-                self.muteButton.setText("X")
+                self.muteButton.setIcon(self.style().standardIcon(QStyle.SP_MediaVolumeMuted))
             else:
-                self.muteButton.setText("Xð")
+                self.muteButton.setIcon(self.style().standardIcon(QStyle.SP_MediaVolume))
     
     def fullScreen(self):
         if self.mediaPlayer!=None:
@@ -510,11 +532,7 @@ class AL_Player(QtWidgets.QMainWindow):
                     
     def positionChanged(self, position):
         self.positionSlider.setValue(position)
-        if self.AMLStatus == True:
-            image = self.grabVideoSurface.getCurrentFrame
-            if not image.isNull():
-                img_list=self.divideImage(self.convertQImageToMat(image))
-                self.sendColor(img_list)
+        
         
     def durationChanged(self, duration):
         self.positionSlider.setRange(0, duration)
@@ -522,6 +540,12 @@ class AL_Player(QtWidgets.QMainWindow):
     def volumeChanged(self, volume):
         if self.mediaPlayer!=None:
             self.volumeSlider.setValue(volume)
+            if volume<1:
+                self.muteButton.setIcon(self.style().standardIcon(QStyle.SP_MediaVolumeMuted))
+            else:
+                self.muteButton.setIcon(self.style().standardIcon(QStyle.SP_MediaVolume))
+                self.mediaPlayer.setMuted(False)
+                
 
     def setPosition(self, position):
         if self.mediaPlayer!=None:
@@ -580,17 +604,25 @@ class AL_Player(QtWidgets.QMainWindow):
 
     def stateChanged(self,status):
         if status in [QMediaPlayer.EndOfMedia,QMediaPlayer.StoppedState]:
-            self.playbutton.setText("4")
+            self.status_threads = True
+            self.threads1.join()
+            self.playbutton.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
             self.playbutton.setChecked(False)
             self.mediaPlayer.setPosition(0)
             if self.AMLStatus == True:
                 self.closeBulb()
         if status in [QMediaPlayer.PausedState]:
-            self.playbutton.setText("4")
+            self.status_threads = True
+            self.threads1.join()
+            self.playbutton.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
             self.playbutton.setChecked(False)
         if status in [QMediaPlayer.PlayingState]:
-            self.playbutton.setText(";")
+            self.playbutton.setIcon(self.style().standardIcon(QStyle.SP_MediaPause))
             self.playbutton.setChecked(True)
+            if self.status_threads:
+                self.status_threads = False
+                self.threads1 = threading.Thread(target=self.changeColorThared, daemon=True, args =(lambda : self.status_threads, ))
+                self.threads1.start()
             if self.AMLStatus == True:
                 self.openBulb()
             
@@ -649,11 +681,12 @@ class AL_Player(QtWidgets.QMainWindow):
     def sendColor(self,list):
         if self.bulbCount==0:
             img = list[0]
-            clusters = 5
+            clusters = 1
             dc = FindDominantColors(img, clusters)
             singleColors = dc.dominantColors()
             try:
                 if dc.MAXINDEX > -1:
+                    self.singleBulb.turn_on()
                     self.singleBulb.set_rgb(int(singleColors[dc.MAXINDEX][0]), int(singleColors[dc.MAXINDEX][1]), int(singleColors[dc.MAXINDEX][2]))
                     self.singleBulb.set_brightness(dc.BRIGHTNESS)
                 else:
@@ -664,7 +697,7 @@ class AL_Player(QtWidgets.QMainWindow):
         elif self.bulbCount==1:
             leftimg = list[0]
             rightimg = list[1]
-            clusters = 5
+            clusters = 2
             dc = FindDominantColors(leftimg, clusters)
             doubleColors = dc.dominantColors()
             leftBrightness=dc.BRIGHTNESS
@@ -702,7 +735,7 @@ class AL_Player(QtWidgets.QMainWindow):
             rightTopimg = list[3]
             leftBotimg = list[0]
             rightBotimg = list[2]
-            clusters = 5
+            clusters = 4
             
             dc = FindDominantColors(leftTopimg, clusters)
             fourColors = dc.dominantColors()

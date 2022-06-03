@@ -10,8 +10,8 @@ import time
 import threading
 
 class ALP_AboutUs(QtWidgets.QMainWindow):
-    X=5
-    Y=260
+    X=7
+    Y=270
     def __init__(self, parent=None):
         super().__init__()
         #self.uis = uic.loadUi(os.path.join(os.path.dirname(__file__), "About.ui"),self)
@@ -79,8 +79,8 @@ class ALP_AboutUs(QtWidgets.QMainWindow):
           self.Y=self.Y-1
           time.sleep(0.1)
           self.marqueeLabel.repaint()
-          if self.Y<-154:
-              self.Y=260
+          if self.Y<-394:
+              self.Y=270
           
     def CloseButtonClicked(self):
         self.close()  

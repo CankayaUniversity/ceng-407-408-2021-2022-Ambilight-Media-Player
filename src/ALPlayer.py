@@ -1,6 +1,7 @@
 #Frame yakalama ve renk gönderme işlemleri için Thread kullanıldı, performans iyileştirmesi yapıldı.
 #UI'lerde yer alan hatalar giderildi.
 #Butonlarda kullanılan simgeler Qt içine gömülü simgelerle değiştirildi
+#Menu renkleri ve hakkımızda metni düzenlendi.
 import sys
 import os
 from os.path import exists
@@ -343,6 +344,9 @@ class AL_Player(QtWidgets.QMainWindow):
                                     border-color: #050a0e;
                                     border-width: 1px;
                                     padding: 2px;
+                                    color:rgb(231, 231, 231);
+                                    selection-color: black;
+                                    selection-background-color: rgb(231, 231, 231);
                                 ''')
     def showMenu(self):
         self.myMenu.exec_(QCursor.pos())

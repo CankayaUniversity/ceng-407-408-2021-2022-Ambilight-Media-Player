@@ -392,6 +392,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>0</height>
+                     </size>
+                    </property>
                     <property name="font">
                      <font>
                       <family>Arial</family>
@@ -439,6 +445,11 @@ QComboBox QAbstractItemView
 
 }</string>
                     </property>
+                    <item>
+                     <property name="text">
+                      <string>No Lamp</string>
+                     </property>
+                    </item>
                     <item>
                      <property name="text">
                       <string>1</string>

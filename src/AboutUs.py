@@ -34,8 +34,8 @@ class ALP_AboutUs(QtWidgets.QMainWindow):
         self.CloseButton.clicked.connect(self.CloseButtonClicked)
 
         self.marqueeLabel = self.findChild(QtWidgets.QLabel, 'marqueeLabel')
-        self.t1 = threading.Thread(target=self.setLabelCoord, daemon=True)
-        self.t1.start()
+        self.tmarquee1 = threading.Thread(target=self.setLabelCoord, daemon=True)
+        self.tmarquee1.start()
         ##End Connection Settings
         
     ##Main Form Event Functions
@@ -78,7 +78,7 @@ class ALP_AboutUs(QtWidgets.QMainWindow):
           self.marqueeLabel.move(self.X,self.Y)
           self.Y=self.Y-1
           time.sleep(0.1)
-          self.marqueeLabel.repaint()
+          #self.marqueeLabel.repaint()
           if self.Y<-394:
               self.Y=270
           

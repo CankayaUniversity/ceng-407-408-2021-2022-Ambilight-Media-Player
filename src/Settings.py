@@ -31,6 +31,9 @@ class ALP_Settings(QtWidgets.QMainWindow):
         ##End Windows Seetings
         
         ##Connection Settings
+        self.firstLabel=self.findChild(QtWidgets.QLabel, 'label_4')
+        self.secondLabel=self.findChild(QtWidgets.QLabel, 'label_5')
+        
         self.firstWidget = self.findChild(QtWidgets.QWidget, 'firstWidget')
         self.secondWidget = self.findChild(QtWidgets.QWidget, 'secondWidget')
         self.thirdWidget = self.findChild(QtWidgets.QWidget, 'thirdWidget')
@@ -149,16 +152,31 @@ class ALP_Settings(QtWidgets.QMainWindow):
     
     def countBulbBoxIndexChanged(self,value):
         if value==0:
+            self.firstWidget.setVisible(False)
             self.secondWidget.setVisible(False)
             self.thirdWidget.setVisible(False)
             self.fourthWidget.setVisible(False)
             
-        elif value==1:
-            self.secondWidget.setVisible(True)
+            
+        if value==1:
+            self.firstLabel.setText("Ip Number of Bulb")
+            self.firstWidget.setVisible(True)
+            self.secondWidget.setVisible(False)
             self.thirdWidget.setVisible(False)
             self.fourthWidget.setVisible(False)
             
         elif value==2:
+            self.firstLabel.setText("Ip Number of Left Bulb")
+            self.secondLabel.setText("Ip Number of Right Bulb")
+            self.firstWidget.setVisible(True)
+            self.secondWidget.setVisible(True)
+            self.thirdWidget.setVisible(False)
+            self.fourthWidget.setVisible(False)
+            
+        elif value==3:
+            self.firstLabel.setText("Ip Number of Left Top Bulb")
+            self.secondLabel.setText("Ip Number of Right Top Bulb")
+            self.firstWidget.setVisible(True)
             self.secondWidget.setVisible(True)
             self.thirdWidget.setVisible(True)
             self.fourthWidget.setVisible(True)

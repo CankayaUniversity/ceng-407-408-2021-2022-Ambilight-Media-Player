@@ -1,7 +1,5 @@
-#Frame yakalama ve renk gönderme işlemleri için Thread kullanıldı, performans iyileştirmesi yapıldı.
-#UI'lerde yer alan hatalar giderildi.
-#Butonlarda kullanılan simgeler Qt içine gömülü simgelerle değiştirildi
-#Menu renkleri ve hakkımızda metni düzenlendi.
+#Settings modülünde iyileştirmeler yapıldı
+
 import sys
 import os
 from os.path import exists
@@ -71,15 +69,18 @@ class AL_Player(QtWidgets.QMainWindow):
            self.secondBulbIp=ipBulbs["secondIp"]
            self.thirdBulbIp=ipBulbs["thirdIp"]
            self.fourthBulbIp=ipBulbs["fourthIp"]
-           self.createBulb()
-           #print(self.AMLStatus)
-           if not self.AMLStatus:
-               popup= QMessageBox()
-               popup.setWindowTitle("Connection Issues")
-               popup.setText("Unexpected error occurred in lamp connections.\nPlease check your connection settings.")
-               popup.setIcon(QMessageBox.Critical)
+           
+           if self.bulbCount >0:
+               self.createBulb()
+               if not self.AMLStatus:
+                   popup= QMessageBox()
+                   popup.setWindowTitle("Connection Issues")
+                   popup.setText("Unexpected error occurred in lamp connections.\nPlease check your connection settings.")
+                   popup.setIcon(QMessageBox.Critical)
+                   self.AMLStatus=False
+                   res= popup.exec_()
+           else:
                self.AMLStatus=False
-               res= popup.exec_()
         else:
             popup= QMessageBox()
             popup.setWindowTitle("Adjustment Issue")
@@ -184,7 +185,7 @@ class AL_Player(QtWidgets.QMainWindow):
         
     ##Menu Functions
     def createBulb(self):
-        if self.bulbCount==0:
+        if self.bulbCount==1:
             if self.singleBulb is None:
                 try:
                     self.singleBulb = Bulb(self.firstBulbIp, effect="smooth", auto_on=True)
@@ -200,7 +201,7 @@ class AL_Player(QtWidgets.QMainWindow):
                     self.AMLStatus=True
                 except:
                     self.AMLStatus=False    
-        elif self.bulbCount==1:
+        elif self.bulbCount==2:
             if self.leftBulb is None:
                 try:
                     self.leftBulb = Bulb(self.firstBulbIp, effect="smooth", auto_on=True)
@@ -231,7 +232,7 @@ class AL_Player(QtWidgets.QMainWindow):
                     self.AMLStatus=True
                 except:
                     self.AMLStatus=False
-        elif self.bulbCount==2:
+        elif self.bulbCount==3:
             if self.leftTopBulb is None:
                 try:
                     self.leftTopBulb = Bulb(self.firstBulbIp, effect="smooth", auto_on=True)
@@ -294,24 +295,24 @@ class AL_Player(QtWidgets.QMainWindow):
                     self.AMLStatus=False
         
     def closeBulb(self):
-        if self.bulbCount==0:
+        if self.bulbCount==1:
                self.singleBulb.turn_off()
-        elif self.bulbCount==1:
+        elif self.bulbCount==2:
                self.leftBulb.turn_off() 
                self.rightBulb.turn_off()
-        elif self.bulbCount==2:
+        elif self.bulbCount==3:
                self.leftTopBulb.turn_off() 
                self.rightTopBulb.turn_off()
                self.leftBottomBulb.turn_off()
                self.rightBottomBulb.turn_off()
                
     def openBulb(self):
-        if self.bulbCount==0:
+        if self.bulbCount==1:
                self.singleBulb.turn_on()
-        elif self.bulbCount==1:
+        elif self.bulbCount==2:
                self.leftBulb.turn_on() 
                self.rightBulb.turn_on()
-        elif self.bulbCount==2:
+        elif self.bulbCount==3:
                self.leftTopBulb.turn_on() 
                self.rightTopBulb.turn_on()
                self.leftBottomBulb.turn_on()
@@ -632,10 +633,10 @@ class AL_Player(QtWidgets.QMainWindow):
             
     def divideImage(self,img):
         image_list=list()
-        if self.bulbCount==0:
+        if self.bulbCount==1:
             image_list.append(img)
             return image_list
-        elif self.bulbCount==1:
+        elif self.bulbCount==2:
             height = img.shape[0]
             width = img.shape[1]
             width_cutoff = width // 2
@@ -644,7 +645,7 @@ class AL_Player(QtWidgets.QMainWindow):
             image_list.append(left)
             image_list.append(right)
             return image_list
-        elif self.bulbCount==2:
+        elif self.bulbCount==3:
             height = img.shape[0]
             width = img.shape[1]
             width_cutoff = width // 2
@@ -683,9 +684,9 @@ class AL_Player(QtWidgets.QMainWindow):
         return arr
     
     def sendColor(self,list):
-        if self.bulbCount==0:
+        if self.bulbCount==1:
             img = list[0]
-            clusters = 1
+            clusters = 4
             dc = FindDominantColors(img, clusters)
             singleColors = dc.dominantColors()
             try:
@@ -698,10 +699,10 @@ class AL_Player(QtWidgets.QMainWindow):
             except:
                 pass
             
-        elif self.bulbCount==1:
+        elif self.bulbCount==2:
             leftimg = list[0]
             rightimg = list[1]
-            clusters = 2
+            clusters = 4
             dc = FindDominantColors(leftimg, clusters)
             doubleColors = dc.dominantColors()
             leftBrightness=dc.BRIGHTNESS
@@ -733,7 +734,7 @@ class AL_Player(QtWidgets.QMainWindow):
             except:
                 pass
         
-        elif self.bulbCount==2:
+        elif self.bulbCount==3:
             
             leftTopimg = list[1]
             rightTopimg = list[3]
